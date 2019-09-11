@@ -60,7 +60,6 @@ public class MechanumTest extends OpMode
     private DcMotor rightFront = null;
     private DcMotor leftBack = null;
     private DcMotor rightBack = null;
-
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -108,17 +107,28 @@ public class MechanumTest extends OpMode
     @Override
     public void loop() {
         // Setup a variable for each drive wheel to save power level for telemetry
-
         mechanumDrive(gamepad1.left_stick_y,gamepad1.left_stick_x, gamepad1.right_stick_x);
         }
+
     @Override
     public void stop() {
     }
     public void mechanumDrive(float forward, float strafe, float rotation){
-        leftBack.setPower(forward - strafe + rotation);
-        leftFront.setPower(forward + strafe + rotation);
-        rightBack.setPower(forward + strafe - rotation);
-        rightFront.setPower(forward - strafe - rotation);
+        if(Math.abs(forward)< .2){
+            forward = 0;
+        }
+
+        if(Math.abs(strafe)< .2){
+            strafe = 0;
+        }
+
+        if(Math.abs(rotation)< .2){
+            rotation = 0;
+        }
+        leftBack.setPower(forward + strafe - rotation);
+        leftFront.setPower(forward - strafe - rotation);
+        rightBack.setPower(forward - strafe + rotation);
+        rightFront.setPower(forward + strafe + rotation);
     }
 
 }
