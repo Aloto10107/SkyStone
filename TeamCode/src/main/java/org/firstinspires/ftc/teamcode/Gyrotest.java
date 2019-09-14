@@ -28,81 +28,80 @@ package org.firstinspires.ftc.teamcode;/* Copyright (c) 2017 FIRST. All rights r
  */
 
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+
+
+import com.acmerobotics.dashboard.FtcDashboard;
+
 /**
- * This file contains an example of an iterative (Non-Linear) "OpMode".
- * An OpMode is a 'program' that runs in either the autonomous or the teleop period of an FTC match.
- * The names of OpModes appear on the menu of the FTC Driver Station.
- * When an selection is made from the menu, the corresponding OpMode
+ * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
+ * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
+ * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
  * class is instantiated on the Robot Controller and executed.
  *
  * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
- * It includes all the skeletal structure that all iterative OpModes contain.
+ * It includes all the skeletal structure that all linear OpModes contain.
  *
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="MechanumTest", group="Iterative Opmode")
+@Autonomous(name="GyroTest", group="Linear Opmode")
 //@Disabled
-public class MechanumTest extends OpMode
-{
-    // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftFront = null;
-    private DcMotor rightFront = null;
-    private DcMotor leftBack = null;
-    private DcMotor rightBack = null;
-    /*
-     * Code to run ONCE when the driver hits INIT
-     */
+public class Gyrotest extends LinearOpMode {
+
     RobotMap robot = new RobotMap();
 
 
     @Override
-    public void init() {
+    public void runOpMode() throws InterruptedException {
 
         robot.init(hardwareMap);
 
+        FtcDashboard dashboard = FtcDashboard.getInstance();
+
         robot.imuINIT();
 
-    }
-
-    /*
-     * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
-     */
-    @Override
-    public void init_loop() {
-    }
-
-    /*
-     * Code to run ONCE when the driver hits PLAY
-     */
-    @Override
-    public void start() {
-        runtime.reset();
-    }
-
-    /*
-     * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
-     */
-    @Override
-    public void loop() {
-        // Setup a variable for each drive wheel to save power level for telemetry
-        robot.mechanumDrive(gamepad1.left_stick_y,gamepad1.left_stick_x, gamepad1.right_stick_x);
-
-        telemetry.addData("heading",robot.getHeading());
+        telemetry.addLine("ready speagaty");
         telemetry.update();
-        }
 
-    @Override
-    public void stop() {
+        waitForStart();
+
+        telemetry.addData("heading:",robot.getHeading());
+        telemetry.addData("Acceleration", robot.getAcceleration());
+        //gyroTurn(90);
+        robot.Gyroturn(90);
+
+    }
+
+    public void gyroTurn(double degrees){
+        double kp = .005;
+        double Pout;
+        double error = robot.getHeading() - degrees;
+
+        while(Math.abs(error) >= 5){
+            Pout = kp * error;
+            robot.setMotor_br(-Pout);
+            robot.setMotor_fr(-Pout);
+            robot.setMotor_bl(Pout);
+            robot.setMotor_fl(Pout);
+            if (Math.abs(error) <= 5){
+                break;
+            }
+
+        }
+        robot.setMotor_bl(0);
+        robot.setMotor_br(0);
+        robot.setMotor_fr(0);
+        robot.setMotor_fl(0);
     }
 }
+//this is useles

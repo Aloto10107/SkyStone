@@ -102,7 +102,23 @@ public class  RobotMap {
 
         rightBack.setPower(convertedPower);
     }
+    public void mechanumDrive(float forward, float strafe, float rotation){
+        if(Math.abs(forward)< .2){
+            forward = 0;
+        }
 
+        if(Math.abs(strafe)< .2){
+            strafe = 0;
+        }
+
+        if(Math.abs(rotation)< .2){
+            rotation = 0;
+        }
+        leftBack.setPower(forward + strafe - rotation);
+        leftFront.setPower(forward - strafe - rotation);
+        rightBack.setPower(forward - strafe + rotation);
+        rightFront.setPower(forward + strafe + rotation);
+    }
     public void imuINIT() {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -131,20 +147,22 @@ public class  RobotMap {
     public void Gyroturn(float degrees) {
         float Kp = (float) 0.008;
         float Kd = (float) 0.0001;
+
         while (true) {
             deltaTime = System.nanoTime() - preTime;
-            Gerror = degrees - getHeading();
+            Gerror = getHeading() - degrees;
             PDout = (Kp * Gerror) + (Kd * (Gerror / deltaTime));
-            setMotor_bl(-PDout);
-            setMotor_fl(-PDout);
-            setMotor_br(PDout);
-            setMotor_fr(PDout);
-            preTime = currentTime;
+            //PDout = Kp * Gerror;
+            leftBack.setPower(-PDout);
+            leftFront.setPower(-PDout);
+            rightBack.setPower(PDout);
+            rightFront.setPower(PDout);
+            //preTime = currentTime;
             if (Math.abs(Gerror) <= 5) {
-                setMotor_bl(0);
-                setMotor_br(0);
-                setMotor_fr(0);
-                setMotor_fl(0);
+                leftBack.setPower(0);
+                rightBack.setPower(0);
+                rightFront.setPower(0);
+                leftFront.setPower(0);
                 break;
             }
         }
