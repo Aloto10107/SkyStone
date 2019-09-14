@@ -50,7 +50,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Iterative OpMode", group="Iterative Opmode")
+@TeleOp(name="MechanumTest", group="Iterative Opmode")
 //@Disabled
 public class MechanumTest extends OpMode
 {
@@ -63,27 +63,16 @@ public class MechanumTest extends OpMode
     /*
      * Code to run ONCE when the driver hits INIT
      */
+    RobotMap robot = new RobotMap();
+
+
     @Override
     public void init() {
-        telemetry.addData("Status", "Initialized");
 
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
-        leftFront  = hardwareMap.get(DcMotor.class, "left_front");
-        rightFront = hardwareMap.get(DcMotor.class, "right_front");
-        leftBack = hardwareMap.get(DcMotor.class, "left_back" );
-        rightBack = hardwareMap.get(DcMotor.class, "right_back");
+        robot.init(hardwareMap);
 
-        // Most robots need the motor on one side to be reversed to drive forward
-        // Reverse the motor that runs backwards when connected directly to the battery
-        leftFront.setDirection(DcMotor.Direction.FORWARD);
-        rightFront.setDirection(DcMotor.Direction.REVERSE);
-        leftBack.setDirection(DcMotor.Direction.FORWARD);
-        rightBack.setDirection(DcMotor.Direction.REVERSE);
+        robot.imuINIT();
 
-        // Tell the driver that initialization is complete.
-        telemetry.addData("Status", "Initialized");
     }
 
     /*
@@ -107,28 +96,13 @@ public class MechanumTest extends OpMode
     @Override
     public void loop() {
         // Setup a variable for each drive wheel to save power level for telemetry
-        mechanumDrive(gamepad1.left_stick_y,gamepad1.left_stick_x, gamepad1.right_stick_x);
+        robot.mechanumDrive(gamepad1.left_stick_y,gamepad1.left_stick_x, gamepad1.right_stick_x);
+
+        telemetry.addData("heading",robot.getHeading());
+        telemetry.update();
         }
 
     @Override
     public void stop() {
     }
-    public void mechanumDrive(float forward, float strafe, float rotation){
-        if(Math.abs(forward)< .2){
-            forward = 0;
-        }
-
-        if(Math.abs(strafe)< .2){
-            strafe = 0;
-        }
-
-        if(Math.abs(rotation)< .2){
-            rotation = 0;
-        }
-        leftBack.setPower(forward + strafe - rotation);
-        leftFront.setPower(forward - strafe - rotation);
-        rightBack.setPower(forward - strafe + rotation);
-        rightFront.setPower(forward + strafe + rotation);
-    }
-
 }

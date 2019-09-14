@@ -28,6 +28,7 @@ package org.firstinspires.ftc.teamcode;/* Copyright (c) 2017 FIRST. All rights r
  */
 
 
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -36,6 +37,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+
+
+import com.acmerobotics.dashboard.FtcDashboard;
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -50,19 +54,54 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Basic: Linear OpMode", group="Linear Opmode")
+@Autonomous(name="GyroTest", group="Linear Opmode")
 //@Disabled
 public class Gyrotest extends LinearOpMode {
 
     RobotMap robot = new RobotMap();
 
+
     @Override
     public void runOpMode() throws InterruptedException {
+
+        robot.init(hardwareMap);
+
+        FtcDashboard dashboard = FtcDashboard.getInstance();
+
+        robot.imuINIT();
+
+        telemetry.addLine("ready speagaty");
+        telemetry.update();
+
+        waitForStart();
+
         telemetry.addData("heading:",robot.getHeading());
         telemetry.addData("Acceleration", robot.getAcceleration());
+        //gyroTurn(90);
         robot.Gyroturn(90);
-        robot.wait(2000);
-        robot.turn(1,200);
+
+    }
+
+    public void gyroTurn(double degrees){
+        double kp = .005;
+        double Pout;
+        double error = robot.getHeading() - degrees;
+
+        while(Math.abs(error) >= 5){
+            Pout = kp * error;
+            robot.setMotor_br(-Pout);
+            robot.setMotor_fr(-Pout);
+            robot.setMotor_bl(Pout);
+            robot.setMotor_fl(Pout);
+            if (Math.abs(error) <= 5){
+                break;
+            }
+
+        }
+        robot.setMotor_bl(0);
+        robot.setMotor_br(0);
+        robot.setMotor_fr(0);
+        robot.setMotor_fl(0);
     }
 }
 //this is useles

@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
+
 /*
  * This sample demonstrates how to stream frames from Vuforia to the dashboard. Make sure to fill in
  * your Vuforia key below and select the 'Camera' preset on top right of the dashboard. This sample
