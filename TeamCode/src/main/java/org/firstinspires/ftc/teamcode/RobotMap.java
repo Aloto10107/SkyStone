@@ -37,13 +37,13 @@ public class  RobotMap {
     float deltaTime = 0;
     float preTime = 0;
     float PDout = 0;
-
+    double COUNTS_PER_INCH = 164.93;
 
     //HardwareMap hwMap =  null;
 
 
     /* Constructor */
-    public RobotMap(){
+    public RobotMap() {
 
     }
 
@@ -66,6 +66,7 @@ public class  RobotMap {
         rightBack.setDirection(DcMotor.Direction.REVERSE);
 
     }
+
     public synchronized void turn(double power, long time) throws InterruptedException {
         setMotor_bl(-power);
         setMotor_fl(-power);
@@ -76,30 +77,32 @@ public class  RobotMap {
         setMotor_fl(0);
         setMotor_br(0);
         setMotor_fr(0);
-    }public synchronized void setMotor_fl(double power)
-    {
+    }
+
+    public synchronized void setMotor_fl(double power) {
         double convertedPower = (power);
 
         leftFront.setPower(convertedPower);
     }
-    public synchronized void setMotor_bl(double power)
-    {
+
+    public synchronized void setMotor_bl(double power) {
         double convertedPower = (power);
 
         leftBack.setPower(convertedPower);
     }
-    public synchronized void setMotor_fr(double power)
-    {
+
+    public synchronized void setMotor_fr(double power) {
         double convertedPower = (power);
 
         rightFront.setPower(convertedPower);
     }
-    public synchronized void setMotor_br(double power)
-    {
+
+    public synchronized void setMotor_br(double power) {
         double convertedPower = (power);
 
         rightBack.setPower(convertedPower);
     }
+
     public void imuINIT() {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -110,19 +113,22 @@ public class  RobotMap {
         parameters.accelerationIntegrationAlgorithm = null;//new JustLoggingAccelerationIntegrator();
         imu.initialize(parameters);
     }
+
     public float getHeading() {
         //PLZ dont touch *touch*
-        angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         return angles.firstAngle;
     }
-    public double[] getAcceleration(){
+
+    public double[] getAcceleration() {
 
         acceleration = imu.getAcceleration();
-        double[] accel = new double[] {acceleration.xAccel,acceleration.yAccel,acceleration.zAccel};
+        double[] accel = new double[]{acceleration.xAccel, acceleration.yAccel, acceleration.zAccel};
 
         return accel;
     }
-    public void Gyroturn(float degrees){
+
+    public void Gyroturn(float degrees) {
         float Kp = (float) 0.008;
         float Kd = (float) 0.0001;
         while (true) {
@@ -153,11 +159,337 @@ public class  RobotMap {
         Rev2mDistanceSensor sensorTimeOfFlight = (Rev2mDistanceSensor)sensorRange;*/
 
 
+    }
+
+
+    public void encoderDriveStraight(double speed,
+
+
+                                     double inches,
+
+
+                                     double timeoutS) {
+
+
+        int newLeftBackTarget;
+
+
+        int newrightBackTarget;
+
+
+        int newLeftFrontTarget;
+
+
+        int newRightFrontTarget;
+
+
+        boolean rightAhead = false;
+
+
+        boolean leftAhead = false;
 
 
 
+
+        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+        newLeftBackTarget = (int) (inches * COUNTS_PER_INCH);
+
+
+        newrightBackTarget = (int) (inches * COUNTS_PER_INCH);
+
+
+        newLeftFrontTarget = (int) (inches * COUNTS_PER_INCH);
+
+
+        newRightFrontTarget = (int) (inches * COUNTS_PER_INCH);
+
+
+        leftFront.setTargetPosition(-newLeftBackTarget);
+
+
+        leftBack.setTargetPosition(-newrightBackTarget);
+
+
+        rightFront.setTargetPosition(-newLeftFrontTarget);
+
+
+        rightBack.setTargetPosition(-newRightFrontTarget);
+
+
+        speed = -speed;
+
+
+        // Turn On RUN_TO_POSITION
+
+
+        rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+        leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+/*
+                leftBack.getCurrentPosition();
+
+
+                rightBack.getCurrentPosition();
+
+
+                leftFront.getCurrentPosition();
+
+
+                rightFront.getCurrentPosition();*/
+
+
+
+        //runtime.reset();
+
+
+        leftBack.setPower(speed);
+
+
+        rightBack.setPower(speed);
+
+
+        leftFront.setPower(speed);
+
+
+        rightFront.setPower(speed);
+
+/*
+        leftBack.getCurrentPosition();
+
+        rightBack.getCurrentPosition();
+
+        leftFront.getCurrentPosition();
+
+        rightFront.getCurrentPosition();
+*/
+
+
+        //Stop All Motion;
+
+
+        //runtime.reset();
+
+
+        while (leftFront.isBusy()){
+
+        }
+
+        leftBack.setPower(0);
+
+
+        rightBack.setPower(0);
+
+
+        leftFront.setPower(0);
+
+
+        rightFront.setPower(0);
+
+
+        //Turn off RUN_TO_POSITION
+
+
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+        }
+
+
+
+
+
+    /*public void encoderDriveRotate(double speed,
+
+
+                                   double degrees,
+
+
+                                   double timeoutS) {
+
+
+        int newLeftBackTarget;
+
+
+        int newrightBackTarget;
+
+
+        int newLeftFrontTarget;
+
+
+        int newRightFrontTarget;
+
+
+       {
+
+
+            leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+            leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+            rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+            rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+            newLeftBackTarget = -(int) (degrees * COUNTS_PER_DEGREE);
+
+
+            newrightBackTarget = +(int) (degrees * COUNTS_PER_DEGREE);
+
+
+            newLeftFrontTarget = -(int) (degrees * COUNTS_PER_DEGREE);
+
+
+            newRightFrontTarget = +(int) (degrees * COUNTS_PER_DEGREE);
+
+
+            leftBack.setTargetPosition(newLeftBackTarget);
+
+
+            rightBack.setTargetPosition(newrightBackTarget);
+
+
+            leftFront.setTargetPosition(newLeftFrontTarget);
+
+
+            rightFront.setTargetPosition(newRightFrontTarget);
+
+
+            leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+            rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+            leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+            rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                    leftBack.getCurrentPosition(),
+
+
+                    rightBack.getCurrentPosition(),
+
+
+                    leftFront.getCurrentPosition(),
+
+
+                    rightFront.getCurrentPosition()):
+
+
+           runtime.reset();
+
+
+            if (speed > 0.0) {
+
+
+                leftBack.setPower(-(speed * 1.00));
+
+
+                rightBack.setPower(speed * 1.583);
+
+
+                leftFront.setPower(-(speed * 1.00));
+
+
+                rightFront.setPower(speed * 1.583);
+
+
+            } else {
+
+
+                leftBack.setPower(speed);
+
+
+                rightBack.setPower(-(speed * 1.00));
+
+
+                leftFront.setPower(speed);
+
+
+                rightFront.setPower(-(speed * 1.00));
+
+
+            }
+
+
+
+
+                        leftBack.getCurrentPosition(),
+
+
+                        rightBack.getCurrentPosition(),
+
+
+                        leftFront.getCurrentPosition(),
+
+
+                        rightFront.getCurrentPosition())
+
+
+       }
+
+
+            runtime.reset();
+
+
+            leftBack.setPower(0);
+
+
+            rightBack.setPower(0);
+
+
+            leftFront.setPower(0);
+
+
+            rightFront.setPower(0);
+
+
+            leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+            rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+            leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+            rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+        }*/
 
 
     }
 
-}
