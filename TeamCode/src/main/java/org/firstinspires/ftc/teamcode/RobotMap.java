@@ -20,13 +20,14 @@ import static java.lang.Thread.sleep;
 
 public class  RobotMap {
 
+    public RobotMap robot;
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFront = null;
     private DcMotor rightFront = null;
     private DcMotor leftBack = null;
-    private DcMotor rightBack = null;:
-    private DistanceSensor leftSensor;
-    private DistanceSensor rightSensor;
+    private DcMotor rightBack = null;
+    public DistanceSensor leftSensor;
+    public DistanceSensor rightSensor;
     private Orientation angles;
     private Acceleration acceleration;
     public BNO055IMU imu;
@@ -67,7 +68,19 @@ public class  RobotMap {
         leftBack.setDirection(DcMotor.Direction.FORWARD);
         rightBack.setDirection(DcMotor.Direction.FORWARD);
 
+        rightBack.setDirection(DcMotor.Direction.REVERSE);
+        leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+    }
+    public synchronized void drive(double power, long time) throws InterruptedException {
+        setMotor_br(power);
+        setMotor_bl(power);
+        setMotor_fl(power);
+        setMotor_fr(power);
+        sleep(time);
     }
 
     public synchronized void turn(double power, long time) throws InterruptedException {
@@ -80,6 +93,13 @@ public class  RobotMap {
         setMotor_fl(0);
         setMotor_br(0);
         setMotor_fr(0);
+    }
+    public synchronized void strafeRight(double power, long time) throws InterruptedException {
+        setMotor_fr(power);
+        setMotor_bl(power);
+        setMotor_fl(-power);
+        setMotor_br(-power);
+        sleep(time);
     }
 
     public synchronized void setMotor_fl(double power) {
@@ -202,6 +222,14 @@ public class  RobotMap {
 
 
         int newRightFrontTarget;
+
+
+        boolean rightAhead = false;
+
+
+        boolean leftAhead = false;
+
+
 
 
         leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
