@@ -261,7 +261,7 @@ public class FtcRobotControllerActivity extends Activity
   }
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  protected void onCreate(Bundle savedInstanceState)  {
     super.onCreate(savedInstanceState);
 
     if (enforcePermissionValidator()) {

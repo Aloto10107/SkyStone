@@ -27,4 +27,8 @@ allprojects {
     }
 }
 
-
+allprojects {
+    repositories {
+        jcenter()
+    }
+}

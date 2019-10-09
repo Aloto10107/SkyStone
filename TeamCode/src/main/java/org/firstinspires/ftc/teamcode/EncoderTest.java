@@ -101,13 +101,15 @@ public class EncoderTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
+
         robot.init(hardwareMap);
 
         telemetry.addLine("ready speatly");
         telemetry.update();
 
         waitForStart();
-        robot.encoderDriveStraight(0.5, 12, 60099999);
+        robot.encoderDriveStraight(0.5, 24, 60099999);
+
 
 
 

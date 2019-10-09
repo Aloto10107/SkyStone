@@ -59,11 +59,11 @@ import com.acmerobotics.dashboard.FtcDashboard;
 public class Gyrotest extends LinearOpMode {
 
     RobotMap robot = new RobotMap();
+    
 
 
     @Override
     public void runOpMode() throws InterruptedException {
-
         robot.init(hardwareMap);
 
         FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -80,28 +80,8 @@ public class Gyrotest extends LinearOpMode {
         //gyroTurn(90);
         robot.Gyroturn(90);
 
-    }
 
-    public void gyroTurn(double degrees){
-        double kp = .005;
-        double Pout;
-        double error = robot.getHeading() - degrees;
 
-        while(Math.abs(error) >= 5){
-            Pout = kp * error;
-            robot.setMotor_br(-Pout);
-            robot.setMotor_fr(-Pout);
-            robot.setMotor_bl(Pout);
-            robot.setMotor_fl(Pout);
-            if (Math.abs(error) <= 5){
-                break;
-            }
-
-        }
-        robot.setMotor_bl(0);
-        robot.setMotor_br(0);
-        robot.setMotor_fr(0);
-        robot.setMotor_fl(0);
-    }
+      }
 }
 //this is useles

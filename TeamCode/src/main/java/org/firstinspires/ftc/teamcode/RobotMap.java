@@ -24,7 +24,9 @@ public class  RobotMap {
     private DcMotor leftFront = null;
     private DcMotor rightFront = null;
     private DcMotor leftBack = null;
-    private DcMotor rightBack = null;
+    private DcMotor rightBack = null;:
+    private DistanceSensor leftSensor;
+    private DistanceSensor rightSensor;
     private Orientation angles;
     private Acceleration acceleration;
     public BNO055IMU imu;
@@ -37,7 +39,7 @@ public class  RobotMap {
     float deltaTime = 0;
     float preTime = 0;
     float PDout = 0;
-    double COUNTS_PER_INCH = 164.93;
+    double COUNTS_PER_INCH = 100;
 
     //HardwareMap hwMap =  null;
 
@@ -61,9 +63,10 @@ public class  RobotMap {
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         leftFront.setDirection(DcMotor.Direction.FORWARD);
-        rightFront.setDirection(DcMotor.Direction.REVERSE);
+        rightFront.setDirection(DcMotor.Direction.FORWARD);
         leftBack.setDirection(DcMotor.Direction.FORWARD);
-        rightBack.setDirection(DcMotor.Direction.REVERSE);
+        rightBack.setDirection(DcMotor.Direction.FORWARD);
+
 
     }
 
@@ -145,7 +148,7 @@ public class  RobotMap {
     }
 
     public void Gyroturn(float degrees) {
-        float Kp = (float) 0.008;
+        float Kp = (float) 0.012;
         float Kd = (float) 0.0001;
 
         while (true) {
@@ -201,14 +204,6 @@ public class  RobotMap {
         int newRightFrontTarget;
 
 
-        boolean rightAhead = false;
-
-
-        boolean leftAhead = false;
-
-
-
-
         leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
@@ -233,51 +228,6 @@ public class  RobotMap {
         newRightFrontTarget = (int) (inches * COUNTS_PER_INCH);
 
 
-        leftFront.setTargetPosition(-newLeftBackTarget);
-
-
-        leftBack.setTargetPosition(-newrightBackTarget);
-
-
-        rightFront.setTargetPosition(-newLeftFrontTarget);
-
-
-        rightBack.setTargetPosition(-newRightFrontTarget);
-
-
-        speed = -speed;
-
-
-        // Turn On RUN_TO_POSITION
-
-
-        rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-
-        leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-
-        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-
-        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-/*
-                leftBack.getCurrentPosition();
-
-
-                rightBack.getCurrentPosition();
-
-
-                leftFront.getCurrentPosition();
-
-
-                rightFront.getCurrentPosition();*/
-
-
-
-        //runtime.reset();
-
-
         leftBack.setPower(speed);
 
 
@@ -289,198 +239,7 @@ public class  RobotMap {
 
         rightFront.setPower(speed);
 
-/*
-        leftBack.getCurrentPosition();
-
-        rightBack.getCurrentPosition();
-
-        leftFront.getCurrentPosition();
-
-        rightFront.getCurrentPosition();
-*/
-
-
-        //Stop All Motion;
-
-
-        //runtime.reset();
-
-
-        while (leftFront.isBusy()){
-
-        }
-
-        leftBack.setPower(0);
-
-
-        rightBack.setPower(0);
-
-
-        leftFront.setPower(0);
-
-
-        rightFront.setPower(0);
-
-
-        //Turn off RUN_TO_POSITION
-
-
-        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-
-        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-
-        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-
-        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-
-        }
-
-
-
-
-
-    /*public void encoderDriveRotate(double speed,
-
-
-                                   double degrees,
-
-
-                                   double timeoutS) {
-
-
-        int newLeftBackTarget;
-
-
-        int newrightBackTarget;
-
-
-        int newLeftFrontTarget;
-
-
-        int newRightFrontTarget;
-
-
-       {
-
-
-            leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-
-            leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-
-            rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-
-            rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-
-            newLeftBackTarget = -(int) (degrees * COUNTS_PER_DEGREE);
-
-
-            newrightBackTarget = +(int) (degrees * COUNTS_PER_DEGREE);
-
-
-            newLeftFrontTarget = -(int) (degrees * COUNTS_PER_DEGREE);
-
-
-            newRightFrontTarget = +(int) (degrees * COUNTS_PER_DEGREE);
-
-
-            leftBack.setTargetPosition(newLeftBackTarget);
-
-
-            rightBack.setTargetPosition(newrightBackTarget);
-
-
-            leftFront.setTargetPosition(newLeftFrontTarget);
-
-
-            rightFront.setTargetPosition(newRightFrontTarget);
-
-
-            leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-
-            rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-
-            leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-
-            rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                    leftBack.getCurrentPosition(),
-
-
-                    rightBack.getCurrentPosition(),
-
-
-                    leftFront.getCurrentPosition(),
-
-
-                    rightFront.getCurrentPosition()):
-
-
-           runtime.reset();
-
-
-            if (speed > 0.0) {
-
-
-                leftBack.setPower(-(speed * 1.00));
-
-
-                rightBack.setPower(speed * 1.583);
-
-
-                leftFront.setPower(-(speed * 1.00));
-
-
-                rightFront.setPower(speed * 1.583);
-
-
-            } else {
-
-
-                leftBack.setPower(speed);
-
-
-                rightBack.setPower(-(speed * 1.00));
-
-
-                leftFront.setPower(speed);
-
-
-                rightFront.setPower(-(speed * 1.00));
-
-
-            }
-
-
-
-
-                        leftBack.getCurrentPosition(),
-
-
-                        rightBack.getCurrentPosition(),
-
-
-                        leftFront.getCurrentPosition(),
-
-
-                        rightFront.getCurrentPosition())
-
-
-       }
-
-
-            runtime.reset();
-
+        if ((rightFront.getCurrentPosition()>newRightFrontTarget) && (rightBack.getCurrentPosition()>newrightBackTarget) && (leftBack.getCurrentPosition()>newLeftBackTarget) && (leftFront.getCurrentPosition()>newLeftFrontTarget)){
 
             leftBack.setPower(0);
 
@@ -493,21 +252,9 @@ public class  RobotMap {
 
             rightFront.setPower(0);
 
-
-            leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-
-            rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
 
 
-            leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-
-            rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-
-        }*/
-
-
+        }
     }
 
