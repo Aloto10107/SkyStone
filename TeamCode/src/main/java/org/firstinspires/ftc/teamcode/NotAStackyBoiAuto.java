@@ -29,17 +29,26 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.RobotMap;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
+import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
+import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
+import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
+import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
 /**
  * This file illustrates the concept of driving a path based on Gyro heading and encoder counts.
@@ -77,27 +86,163 @@ import org.firstinspires.ftc.teamcode.RobotMap;
 @Autonomous(name="notstackyboi", group="LinearOpMode")
 public class NotAStackyBoiAuto extends LinearOpMode {
     RobotMap robot = new RobotMap();
+    private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
+    private static final boolean PHONE_IS_PORTRAIT = false  ;
 
 
-    @Override
-    public void runOpMode() throws InterruptedException {
+    private static final String VUFORIA_KEY =
+            "AU0W0n3/////AAABmR8XzF3guUvdioVZmVSPQWgSHZEGEsa/li/PrDXTJOzpNa7++SSQmj96GVwRjrH8zk+oQ9P5Efp4sz80tiIS/rmHGtedHonNHn0He1tZoedzk5W24EiWOBo52Wr3tucP2cfP9zucxfOnKahG1cGKDhEV65GPv8YyxbVHYmqID0TEG3GooDJDUSdQqlDVLfVcf+EkFn1CHthzF3xMk7vMdttHHdXHSaYIWdTcx3ZM3HRNUkaBCkkXEKcnlS/SS5MQvlxTeeKVGjhKyWqOQG8JssMTrOrmXlmq5JJyziqjRE0LHvetRx2PpxEpEb2SnCk0UeSJV6U/IccfX/tGyZaTTJfm/XMddlMj9YJ1YpZLvPCk ";
+
+    // Since ImageTarget trackables use mm to specifiy their dimensions, we must use mm for all the physical dimension.
+    // We will define some constants and conversions here
+    private static final float mmPerInch        = 25.4f;
+    // Constant for Stone Target
+    private static final float stoneZ = 2.00f * mmPerInch;
+
+
+    // Class Members
+    private OpenGLMatrix lastLocation = null;
+    private VuforiaLocalizer vuforia = null;
+    private boolean targetVisible = false;
+    private float phoneXRotate    = 0;
+    private float phoneYRotate    = 0;
+    private float phoneZRotate    = 0;
+
+    @Override public void runOpMode() throws InterruptedException{
+
+
+        RobotMap robot = new RobotMap();
+
         robot.init(hardwareMap);
 
-        telemetry.addLine("ready speatly");
+        /*
+         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
+         * We can pass Vuforia the handle to a camera preview resource (on the RC phone);
+         * If no camera monitor is desired, use the parameter-less constructor instead (commented out below).
+         */
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+
+        // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+
+        parameters.vuforiaLicenseKey = VUFORIA_KEY;
+        parameters.cameraDirection   = CAMERA_CHOICE;
+
+        //  Instantiate the Vuforia engine
+        vuforia = ClassFactory.getInstance().createVuforia(parameters);
+
+        // Load the data sets for the trackable objects. These particular data
+        // sets are stored in the 'assets' part of our application.
+        VuforiaTrackables targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
+
+        VuforiaTrackable stoneTarget = targetsSkyStone.get(0);
+        stoneTarget.setName("Stone Target");
+
+
+        // For convenience, gather together all the trackable objects in one easily-iterable collection */
+        List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
+        allTrackables.addAll(targetsSkyStone);
+
+
+
+        stoneTarget.setLocation(OpenGLMatrix
+                .translation(0, 0, stoneZ)
+                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, -90)));
+
+
+
+        if (CAMERA_CHOICE == BACK) {
+            phoneYRotate = -90;
+        } else {
+            phoneYRotate = 90;
+        }
+
+        // Rotate the phone vertical about the X axis if it's in portrait mode
+        if (PHONE_IS_PORTRAIT) {
+            phoneXRotate = 90 ;
+        }
+
+
+        final float CAMERA_FORWARD_DISPLACEMENT  = 4.0f * mmPerInch;   // eg: Camera is 4 Inches in front of robot center
+        final float CAMERA_VERTICAL_DISPLACEMENT = 8.0f * mmPerInch;   // eg: Camera is 8 Inches above ground
+        final float CAMERA_LEFT_DISPLACEMENT     = 0;     // eg: Camera is ON the robot's center line
+
+        OpenGLMatrix robotFromCamera = OpenGLMatrix
+                .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
+                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES, phoneYRotate, phoneZRotate, phoneXRotate));
+
+        /**  Let all the trackable listeners know where the phone is.  */
+        for (VuforiaTrackable trackable : allTrackables) {
+            ((VuforiaTrackableDefaultListener) trackable.getListener()).setPhoneInformation(robotFromCamera, parameters.cameraDirection);
+        }
+
+
+
+        targetsSkyStone.activate();
+
+        telemetry.addLine("ready Speagty");
+
         telemetry.update();
 
-
         waitForStart();
+        robot.drive(1, 4);
+
+        while (!isStopRequested()){
+            targetVisible = false;
+            for (VuforiaTrackable trackable : allTrackables) {
+                if (robot.leftSensor.getDistance(DistanceUnit.CM) > 2) {
+
+                    robot.strafeLeft();
+
+
+                }
+                if (robot.rightSensor.getDistance(DistanceUnit.CM) > 2) {
+                robot.strafeRight();
+
+                if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
+                telemetry.addData("Visible Target", trackable.getName());
+                targetVisible = true;
+
+                wait(100);
+                robot.drive(0.5,2);
+
+
+
+                    // getUpdatedRobotLocation() will return null if no new information is available since
+                    // the last time that call was made, or if the trackable is not currently visible.
+                    OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)trackable.getListener()).getUpdatedRobotLocation();
+                    if (robotLocationTransform != null) {
+                        lastLocation = robotLocationTransform;
+                    }
+                    break;
+                }
+            }
+            telemetry.update();
+
+
+
+
+
+
+        }
+
+
+
+
+
         /*robot.drive(0.5,2);
         robot.Gyroturn(90);
         robot.drive(0.5 , 6);
         robot.Gyroturn(-90);
         robot.drive(0.5, 3);
         */
-        robot.drive(0.5,4);
-        if (robot.leftSensor.getDistance(DistanceUnit.CM) > 0) {
 
-        }
+
+
+    }
+
+
+
 
 
 

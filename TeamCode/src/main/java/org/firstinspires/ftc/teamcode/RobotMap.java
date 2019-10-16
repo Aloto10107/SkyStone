@@ -1,21 +1,17 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
-import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
+
 import static java.lang.Thread.sleep;
 
 public class  RobotMap {
@@ -94,13 +90,28 @@ public class  RobotMap {
         setMotor_br(0);
         setMotor_fr(0);
     }
-    public synchronized void strafeRight(double power, long time) throws InterruptedException {
-        setMotor_fr(power);
-        setMotor_bl(power);
-        setMotor_fl(-power);
-        setMotor_br(-power);
-        sleep(time);
+    public synchronized void strafeRight() throws InterruptedException {
+        setMotor_fr(1);
+        setMotor_bl(1);
+        setMotor_fl(-1);
+        setMotor_br(-1);
+
     }
+    public synchronized void strafeLeft() throws InterruptedException {
+        setMotor_fr(-1);
+        setMotor_bl(-1);
+        setMotor_fl(1);
+        setMotor_br(1);
+    }
+
+    public synchronized void stop() {
+        setMotor_br(0);
+        setMotor_fl(0);
+        setMotor_bl(0);
+        setMotor_fr(0);
+    }
+
+
 
     public synchronized void setMotor_fl(double power) {
         double convertedPower = (power);
