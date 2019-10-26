@@ -4,6 +4,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
@@ -18,10 +19,13 @@ public class  RobotMap {
 
     public RobotMap robot;
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftFront = null;
-    private DcMotor rightFront = null;
-    private DcMotor leftBack = null;
-    private DcMotor rightBack = null;
+    public DcMotor leftFront = null;
+    public DcMotor rightFront = null;
+    public DcMotor leftBack = null;
+    public DcMotor rightBack = null;
+    public DcMotor lift = null;
+    public Servo leftclaw = null;
+    public Servo rightclaw = null;
     public DistanceSensor leftSensor;
     public DistanceSensor rightSensor;
     private Orientation angles;
@@ -36,6 +40,7 @@ public class  RobotMap {
     float deltaTime = 0;
     float preTime = 0;
     float PDout = 0;
+    //1120 counts per rotation
     double COUNTS_PER_INCH = 100;
 
     //HardwareMap hwMap =  null;
@@ -55,20 +60,28 @@ public class  RobotMap {
         rightFront = ahwmap.get(DcMotor.class, "right_front");
         leftBack = ahwmap.get(DcMotor.class, "left_back");
         rightBack = ahwmap.get(DcMotor.class, "right_back");
+        lift = ahwmap.get(DcMotor.class, "lift");
         imu = ahwmap.get(BNO055IMU.class, "imu");
+
+        leftclaw = ahwmap.get(Servo.class, "left_claw");
+        rightclaw = ahwmap.get(Servo.class, "right_claw");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        leftFront.setDirection(DcMotor.Direction.FORWARD);
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
         rightFront.setDirection(DcMotor.Direction.FORWARD);
         leftBack.setDirection(DcMotor.Direction.FORWARD);
-        rightBack.setDirection(DcMotor.Direction.FORWARD);
-
         rightBack.setDirection(DcMotor.Direction.REVERSE);
-        leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     }
     public synchronized void drive(double power, long time) throws InterruptedException {
@@ -111,6 +124,23 @@ public class  RobotMap {
         setMotor_fr(0);
     }
 
+    public synchronized void setLift(double power){
+        lift.setPower(power);
+    }
+
+    public synchronized int getPos(){
+        return rightFront.getCurrentPosition();
+
+    }
+
+    public synchronized void pinch(){
+        leftclaw.setPosition(1);
+        rightclaw.setPosition(0);
+    }
+    public synchronized void notPinch(){
+        leftclaw.setPosition(.6);
+        rightclaw.setPosition(.4);
+    }
 
 
     public synchronized void setMotor_fl(double power) {
@@ -267,6 +297,24 @@ public class  RobotMap {
         newRightFrontTarget = (int) (inches * COUNTS_PER_INCH);
 
 
+        leftBack.setTargetPosition(newLeftBackTarget);
+
+
+        rightBack.setTargetPosition(newrightBackTarget);
+
+
+        leftFront.setTargetPosition(newLeftFrontTarget);
+
+
+        rightFront.setTargetPosition(newRightFrontTarget);
+
+
+        leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
         leftBack.setPower(speed);
 
 
@@ -278,20 +326,27 @@ public class  RobotMap {
 
         rightFront.setPower(speed);
 
-        if ((rightFront.getCurrentPosition()>newRightFrontTarget) && (rightBack.getCurrentPosition()>newrightBackTarget) && (leftBack.getCurrentPosition()>newLeftBackTarget) && (leftFront.getCurrentPosition()>newLeftFrontTarget)){
+        while (rightFront.isBusy() && leftFront.isBusy() && rightBack.isBusy() && leftBack.isBusy()){
 
-            leftBack.setPower(0);
-
-
-            rightBack.setPower(0);
-
-
-            leftFront.setPower(0);
-
-
-            rightFront.setPower(0);
-
+            int x = 0;
+            x ++;
         }
+
+        leftBack.setPower(0);
+
+
+        rightBack.setPower(0);
+
+
+        leftFront.setPower(0);
+
+
+        rightFront.setPower(0);
+
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
         }

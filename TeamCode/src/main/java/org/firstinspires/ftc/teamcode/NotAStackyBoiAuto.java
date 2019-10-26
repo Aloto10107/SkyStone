@@ -203,8 +203,7 @@ public class NotAStackyBoiAuto extends LinearOpMode {
                 telemetry.addData("Visible Target", trackable.getName());
                 targetVisible = true;
 
-                wait(100);
-                robot.drive(0.5,2);
+                robot.stop();
 
 
 

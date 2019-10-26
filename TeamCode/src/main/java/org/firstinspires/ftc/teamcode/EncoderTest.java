@@ -29,16 +29,9 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
-
-import org.firstinspires.ftc.teamcode.RobotMap;
 
 /**
  * This file illustrates the concept of driving a path based on Gyro heading and encoder counts.
@@ -108,9 +101,103 @@ public class EncoderTest extends LinearOpMode {
         telemetry.update();
 
         waitForStart();
-        robot.encoderDriveStraight(0.5, 24, 60099999);
+        encoderDrive(0.5, 24);
 
 
+
+
+    }
+
+    public void encoderDrive(double speed,
+
+
+                                     double inches) {
+
+
+        int newLeftBackTarget;
+
+
+        int newrightBackTarget;
+
+
+        int newLeftFrontTarget;
+
+
+        int newRightFrontTarget;
+
+
+        boolean rightAhead = false;
+
+
+        boolean leftAhead = false;
+
+
+
+        newLeftBackTarget = robot.leftBack.getCurrentPosition() + (int) (inches * robot.COUNTS_PER_INCH);
+
+
+        newrightBackTarget =robot.rightBack.getCurrentPosition() + (int) (inches * robot.COUNTS_PER_INCH);
+
+
+        newLeftFrontTarget = robot.leftFront.getCurrentPosition() + (int) (inches * robot.COUNTS_PER_INCH);
+
+
+        newRightFrontTarget =robot.rightFront.getCurrentPosition() + (int) (inches * robot.COUNTS_PER_INCH);
+
+
+        robot.leftBack.setTargetPosition(newLeftBackTarget);
+
+
+        robot.rightBack.setTargetPosition(newrightBackTarget);
+
+
+        robot.leftFront.setTargetPosition(newLeftFrontTarget);
+
+
+        robot.rightFront.setTargetPosition(newRightFrontTarget);
+
+
+        robot.leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+        robot.leftBack.setPower(speed);
+
+
+        robot.rightBack.setPower(speed);
+
+
+        robot.leftFront.setPower(speed);
+
+
+        robot.rightFront.setPower(speed);
+
+        while (robot.rightFront.isBusy() && robot.leftFront.isBusy() && robot.rightBack.isBusy() && robot.leftBack.isBusy()){
+
+            telemetry.addData("Path1",  "Running to %7d :%7d", newLeftFrontTarget,  newRightFrontTarget);
+            telemetry.addData("Path2",  "Running at %7d :%7d",
+                    robot.leftFront.getCurrentPosition(),
+                    robot.rightFront.getCurrentPosition());
+            telemetry.update();
+        }
+
+        robot.leftBack.setPower(0);
+
+
+        robot.rightBack.setPower(0);
+
+
+        robot.leftFront.setPower(0);
+
+
+        robot.rightFront.setPower(0);
+
+        robot.leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
     }

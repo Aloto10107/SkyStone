@@ -93,9 +93,28 @@ public class MechanumTest extends OpMode
     @Override
     public void loop() {
         // Setup a variable for each drive wheel to save power level for telemetry
-        robot.mechanumDrive(gamepad1.left_stick_y,gamepad1.left_stick_x, gamepad1.right_stick_x);
+        robot.mechanumDrive(gamepad1.right_trigger-gamepad1.left_trigger,-gamepad1.right_stick_x, -gamepad1.left_stick_x);
+
+        if (gamepad2.right_bumper){
+            robot.setLift(1);
+        }
+        else if(gamepad2.left_bumper){
+            robot.setLift(-1);
+        }
+        else
+            robot.setLift(0);
+
+        if (gamepad2.a){
+            robot.pinch();
+        }
+        if (!gamepad2.a){
+            robot.notPinch();
+        }
 
         telemetry.addData("heading",robot.getHeading());
+        telemetry.addData("leftRight",robot.getPos());
+        telemetry.addData("rightclaw",robot.rightclaw.getPosition());
+        telemetry.addData("leftclaw",robot.leftclaw.getPosition());
         telemetry.update();
         }
 
