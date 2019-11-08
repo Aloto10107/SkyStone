@@ -113,10 +113,10 @@ https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
             robot.rightclaw.setPosition(.8);
         }
         if (gamepad2.b){
-            robot.tail.setPosition(1);
+            robot.closeTail();
         }
         else{
-            robot.tail.setPosition(.5);
+            robot.openTail();
         }
 
         telemetry.addData("rightfront",robot.rightFront.getCurrentPosition());

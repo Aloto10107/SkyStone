@@ -51,18 +51,19 @@ public class BlueWaffle extends LinearOpMode {
 
         waitForStart();
 
-        robot.tail.setPosition(1);
+        robot.openTail();
         //robot.encoderDrive(.15,-45);
         robot.drive(-.25,2800);
         sleep(500);
-        robot.tail.setPosition(.5);
+        robot.closeTail();
         sleep(500);
-        robot.strafeRightTime(.25,2000);
+        robot.strafeRightTime(.25,2500);
         sleep(500);
-        robot.drive(.25,2800);
+        robot.drive(.25,4200);
         sleep(500);
-        robot.strafeLeftTime(.5,3000);
-        //robot.encoderDrive(.15,45);
+        robot.openTail();
+        sleep(500);
+        robot.strafeLeftTime(.5,3300);
 
 
 

@@ -51,18 +51,30 @@ public class RedWaffle extends LinearOpMode {
 
         waitForStart();
 
-        robot.tail.setPosition(1);
+        robot.openTail();
         //robot.encoderDrive(.15,-45);
         robot.drive(-.25,2800);
         sleep(500);
-        robot.tail.setPosition(.5);
+        robot.closeTail();
         sleep(500);
-        robot.strafeLeftTime(.25,2000);
+        robot.strafeLeftTime(.25,2500);
         sleep(500);
-        robot.drive(.25,2800);
+        robot.drive(.25,4200);
         sleep(500);
-        robot.strafeRightTime(.5,3000);
-        //robot.encoderDrive(.15,45);
+        robot.openTail();
+        sleep(500);
+        robot.strafeRightTime(.5,3300);
+
+        /*robot.openTail();
+        sleep(500);
+        robot.encoderDrive(.2,-26);
+        sleep(500);
+        robot.strafeLeftTime(.25,2300);
+        robot.drive(.2,6000);
+        sleep(500);
+        robot.openTail();
+        sleep(100);
+        robot.strafeRightTime(.25,5000);*/
 
 
 

@@ -26,7 +26,8 @@ public class  RobotMap {
     public DcMotor lift = null;
     public Servo leftclaw = null;
     public Servo rightclaw = null;
-    public Servo tail = null;
+    public Servo lefttail = null;
+    public Servo righttail = null;
     public DistanceSensor leftSensor;
     public DistanceSensor rightSensor;
     private Orientation angles;
@@ -66,7 +67,8 @@ public class  RobotMap {
 
         leftclaw = ahwmap.get(Servo.class, "left_claw");
         rightclaw = ahwmap.get(Servo.class, "right_claw");
-        tail = ahwmap.get(Servo.class, "tail");
+        lefttail = ahwmap.get(Servo.class, "left_tail");
+        righttail = ahwmap.get(Servo.class, "right_tail");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -199,6 +201,15 @@ public class  RobotMap {
 
         rightBack.setPower(convertedPower);
     }
+    public synchronized void closeTail(){
+       lefttail.setPosition(1);
+       righttail.setPosition(.5);
+    }
+    public synchronized void openTail(){
+        lefttail.setPosition(.5);
+        righttail.setPosition(1);
+    }
+
     public void mechanumDrive(float forward, float strafe, float rotation){
         if(Math.abs(forward)< .2){
             forward = 0;
