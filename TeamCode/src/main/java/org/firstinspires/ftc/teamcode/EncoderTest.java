@@ -101,7 +101,8 @@ public class EncoderTest extends LinearOpMode {
         telemetry.update();
 
         waitForStart();
-        encoderDrive(0.5, 24);
+        //robot.encoderDrive(0.5, 24);
+        robot.encoderDrive(.5,24);
 
 
 

@@ -47,9 +47,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="MechanumTest", group="Iterative Opmode")
+@TeleOp(name="TeleOp", group="Iterative Opmode")
 //@Disabled
-public class MechanumTest extends OpMode
+public class TeleOP extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -103,14 +103,26 @@ public class MechanumTest extends OpMode
         }
         else
             robot.setLift(0);
-
+https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
         if (gamepad2.a){
-            robot.pinch();
+            robot.leftclaw.setPosition(.1);
+            robot.rightclaw.setPosition(.9);
         }
-        if (!gamepad2.a){
-            robot.notPinch();
+        else{
+            robot.leftclaw.setPosition(.2);
+            robot.rightclaw.setPosition(.8);
+        }
+        if (gamepad2.b){
+            robot.tail.setPosition(1);
+        }
+        else{
+            robot.tail.setPosition(.5);
         }
 
+        telemetry.addData("rightfront",robot.rightFront.getCurrentPosition());
+        telemetry.addData("rightback",robot.rightBack.getCurrentPosition());
+        telemetry.addData("leftfront",robot.leftFront.getCurrentPosition());
+        telemetry.addData("leftback",robot.leftBack.getCurrentPosition());
         telemetry.addData("heading",robot.getHeading());
         telemetry.addData("leftRight",robot.getPos());
         telemetry.addData("rightclaw",robot.rightclaw.getPosition());

@@ -26,6 +26,7 @@ public class  RobotMap {
     public DcMotor lift = null;
     public Servo leftclaw = null;
     public Servo rightclaw = null;
+    public Servo tail = null;
     public DistanceSensor leftSensor;
     public DistanceSensor rightSensor;
     private Orientation angles;
@@ -41,7 +42,7 @@ public class  RobotMap {
     float preTime = 0;
     float PDout = 0;
     //1120 counts per rotation
-    double COUNTS_PER_INCH = 100;
+    double COUNTS_PER_INCH = 64.81;
 
     //HardwareMap hwMap =  null;
 
@@ -65,9 +66,11 @@ public class  RobotMap {
 
         leftclaw = ahwmap.get(Servo.class, "left_claw");
         rightclaw = ahwmap.get(Servo.class, "right_claw");
+        tail = ahwmap.get(Servo.class, "tail");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
+
         leftFront.setDirection(DcMotor.Direction.REVERSE);
         rightFront.setDirection(DcMotor.Direction.FORWARD);
         leftBack.setDirection(DcMotor.Direction.FORWARD);
@@ -90,6 +93,10 @@ public class  RobotMap {
         setMotor_fl(power);
         setMotor_fr(power);
         sleep(time);
+        setMotor_br(0);
+        setMotor_bl(0);
+        setMotor_fl(0);
+        setMotor_fr(0);
     }
 
     public synchronized void turn(double power, long time) throws InterruptedException {
@@ -103,18 +110,44 @@ public class  RobotMap {
         setMotor_br(0);
         setMotor_fr(0);
     }
-    public synchronized void strafeRight() throws InterruptedException {
+    public synchronized void strafeLeftTime(double power, long time) throws InterruptedException {
+        setMotor_fr(power);
+        setMotor_bl(power);
+        setMotor_fl(-power);
+        setMotor_br(-power);
+        sleep(time);
+        setMotor_fr(0);
+        setMotor_bl(0);
+        setMotor_fl(0);
+        setMotor_br(0);
+
+    }
+    public synchronized void strafeRightTime(double power, long time) throws InterruptedException {
+        setMotor_fr(-power);
+        setMotor_bl(-power);
+        setMotor_fl(power);
+        setMotor_br(power);
+        sleep(time);
+        setMotor_fr(0);
+        setMotor_bl(0);
+        setMotor_fl(0);
+        setMotor_br(0);
+    }
+
+    public synchronized void strafeLeft() throws InterruptedException {
         setMotor_fr(1);
         setMotor_bl(1);
         setMotor_fl(-1);
         setMotor_br(-1);
 
+
     }
-    public synchronized void strafeLeft() throws InterruptedException {
+    public synchronized void strafeRight() throws InterruptedException {
         setMotor_fr(-1);
         setMotor_bl(-1);
         setMotor_fl(1);
         setMotor_br(1);
+
     }
 
     public synchronized void stop() {
@@ -209,6 +242,13 @@ public class  RobotMap {
     }
 
     public void Gyroturn(float degrees) {
+
+        leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
         float Kp = (float) 0.012;
         float Kd = (float) 0.0001;
 
@@ -217,10 +257,10 @@ public class  RobotMap {
             Gerror = getHeading() - degrees;
             PDout = (Kp * Gerror) + (Kd * (Gerror / deltaTime));
             //PDout = Kp * Gerror;
-            leftBack.setPower(-PDout);
-            leftFront.setPower(-PDout);
-            rightBack.setPower(PDout);
-            rightFront.setPower(PDout);
+            leftBack.setPower(PDout);
+            leftFront.setPower(PDout);
+            rightBack.setPower(-PDout);
+            rightFront.setPower(-PDout);
             //preTime = currentTime;
             if (Math.abs(Gerror) <= 5) {
                 leftBack.setPower(0);
@@ -230,7 +270,10 @@ public class  RobotMap {
                 break;
             }
         }
-
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
 /*        imu = ahwmap.get(BNO055IMU.class, "imu");
@@ -244,13 +287,10 @@ public class  RobotMap {
     }
 
 
-    public void encoderDriveStraight(double speed,
+    public void encoderDrive(double speed,
 
 
-                                     double inches,
-
-
-                                     double timeoutS) {
+                                     double inches) {
 
 
         int newLeftBackTarget;
