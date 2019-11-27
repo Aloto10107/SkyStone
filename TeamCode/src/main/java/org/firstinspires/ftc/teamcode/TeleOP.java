@@ -33,6 +33,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
  * An OpMode is a 'program' that runs in either the autonomous or the teleop period of an FTC match.
@@ -101,31 +103,50 @@ public class TeleOP extends OpMode
         else if(gamepad2.left_bumper){
             robot.setLift(-1);
         }
+
         else
             robot.setLift(0);
 https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
-        if (gamepad2.a){
-            robot.leftclaw.setPosition(.1);
-            robot.rightclaw.setPosition(.9);
+
+        if (gamepad2.y) {
+            robot.leftclaw.setPosition(.69);
+
         }
         else{
-            robot.leftclaw.setPosition(.2);
-            robot.rightclaw.setPosition(.8);
+            robot.leftclaw.setPosition(.3);
         }
+        if(gamepad2.right_trigger > 0) {
+            robot.extendy.setPower(1);
+        }
+        else{
+                robot.extendy.setPower(0);
+            }
+
+        if (gamepad2.left_trigger > 0){
+            robot.extendy.setPower(-1);
+        }
+        else {
+            robot.extendy.setPower(0);
+        }
+
         if (gamepad2.b){
             robot.closeTail();
         }
         else{
             robot.openTail();
-        }
+    }
 
+
+
+        telemetry.addData("linered", robot.linered());
+        telemetry.addData("lineblue", robot.lineblue());
+        telemetry.addData("distance", robot.distanceSensor.getDistance(DistanceUnit.CM));
         telemetry.addData("rightfront",robot.rightFront.getCurrentPosition());
         telemetry.addData("rightback",robot.rightBack.getCurrentPosition());
         telemetry.addData("leftfront",robot.leftFront.getCurrentPosition());
         telemetry.addData("leftback",robot.leftBack.getCurrentPosition());
         telemetry.addData("heading",robot.getHeading());
         telemetry.addData("leftRight",robot.getPos());
-        telemetry.addData("rightclaw",robot.rightclaw.getPosition());
         telemetry.addData("leftclaw",robot.leftclaw.getPosition());
         telemetry.update();
         }

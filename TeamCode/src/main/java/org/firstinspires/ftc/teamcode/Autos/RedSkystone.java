@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;/* Copyright (c) 2017 FIRST. All rights reserved.
+package org.firstinspires.ftc.teamcode.Autos;/* Copyright (c) 2017 FIRST. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted (subject to the limitations in the disclaimer below) provided that
@@ -32,6 +32,8 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.RobotMap;
+
 /**finnaly
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
  * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
@@ -45,15 +47,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="GyroTest", group="Linear Opmode")
+@Autonomous(name="RedSkystone", group="Linear Opmode")
 //@Disabled
-public class Gyrotest extends LinearOpMode {
+public class RedSkystone extends LinearOpMode {
 
     RobotMap robot = new RobotMap();
-    
 
 
-    @Override
+
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
 
@@ -65,13 +66,37 @@ public class Gyrotest extends LinearOpMode {
         telemetry.update();
 
         waitForStart();
+        robot.resetEncoders();
+        robot.encoderDrive(0.5,22);
+        robot.gyroturn(90);
+        robot.drive(0.5, 350);
+        while (robot.hsv()[0]<60){
 
-        telemetry.addData("heading:",robot.getHeading());
-        telemetry.addData("Acceleration", robot.getAcceleration());
-        //gyroTurn(90);
-        robot.gyroturn(-90);
-
-
-
-      }
+            robot.setMotor_br(-.3);
+            robot.setMotor_bl(-.3);
+            robot.setMotor_fr(-.3);
+            robot.setMotor_fl(-.3);
+        }
+        robot.setMotor_br(0);
+        robot.setMotor_bl(0);
+        robot.setMotor_fr(0);
+        robot.setMotor_fl(0);
+        sleep(500);
+        robot.strafeRightTime(.35,800);
+        robot.arm.setPosition(.3);
+        sleep(500);
+        //robot.strafeLeftTime(.5,3500);
+        robot.gyroStrafe(-.5,90,3500);
+        while (robot.linered() < 100) {
+            robot.setMotor_br(-.5 - (.015*(robot.getHeading()-90)));
+            robot.setMotor_bl(-.5 + (.015*(robot.getHeading()-90)));
+            robot.setMotor_fr(-.5 - (.015*(robot.getHeading()-90)));
+            robot.setMotor_fl(-.5 + (.015*(robot.getHeading()-90)));
+        }
+        robot.encoderDrive(.5,-15);
+        robot.arm.setPosition(.8);
+        sleep(500);
+        robot.encoderDrive(.5,15);
+//Big Cliff, Lil Chenster, and Yung Nigil back at the grind//
+    }
 }

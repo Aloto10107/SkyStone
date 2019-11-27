@@ -91,7 +91,16 @@ public class NotAStackyBoiAuto extends LinearOpMode {
 
 
     private static final String VUFORIA_KEY =
-            "AU0W0n3/////AAABmR8XzF3guUvdioVZmVSPQWgSHZEGEsa/li/PrDXTJOzpNa7++SSQmj96GVwRjrH8zk+oQ9P5Efp4sz80tiIS/rmHGtedHonNHn0He1tZoedzk5W24EiWOBo52Wr3tucP2cfP9zucxfOnKahG1cGKDhEV65GPv8YyxbVHYmqID0TEG3GooDJDUSdQqlDVLfVcf+EkFn1CHthzF3xMk7vMdttHHdXHSaYIWdTcx3ZM3HRNUkaBCkkXEKcnlS/SS5MQvlxTeeKVGjhKyWqOQG8JssMTrOrmXlmq5JJyziqjRE0LHvetRx2PpxEpEb2SnCk0UeSJV6U/IccfX/tGyZaTTJfm/XMddlMj9YJ1YpZLvPCk ";
+            "AU0W0n3/" +
+                    "" +
+                    "" +
+                    "" +
+                    "" +
+                    "" +
+                    "" +
+                    "" +
+                    "" +
+                    "////AAABmR8XzF3guUvdioVZmVSPQWgSHZEGEsa/li/PrDXTJOzpNa7++SSQmj96GVwRjrH8zk+oQ9P5Efp4sz80tiIS/rmHGtedHonNHn0He1tZoedzk5W24EiWOBo52Wr3tucP2cfP9zucxfOnKahG1cGKDhEV65GPv8YyxbVHYmqID0TEG3GooDJDUSdQqlDVLfVcf+EkFn1CHthzF3xMk7vMdttHHdXHSaYIWdTcx3ZM3HRNUkaBCkkXEKcnlS/SS5MQvlxTeeKVGjhKyWqOQG8JssMTrOrmXlmq5JJyziqjRE0LHvetRx2PpxEpEb2SnCk0UeSJV6U/IccfX/tGyZaTTJfm/XMddlMj9YJ1YpZLvPCk ";
 
     // Since ImageTarget trackables use mm to specifiy their dimensions, we must use mm for all the physical dimension.
     // We will define some constants and conversions here

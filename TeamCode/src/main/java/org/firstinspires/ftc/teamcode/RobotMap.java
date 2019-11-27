@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Color;
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -19,15 +22,19 @@ public class  RobotMap {
 
     public RobotMap robot;
     private ElapsedTime runtime = new ElapsedTime();
+    public ColorSensor skyStone;
+    public ColorSensor line;
+    public DistanceSensor distanceSensor;
     public DcMotor leftFront = null;
     public DcMotor rightFront = null;
     public DcMotor leftBack = null;
     public DcMotor rightBack = null;
     public DcMotor lift = null;
+    public DcMotor extendy = null;
     public Servo leftclaw = null;
-    public Servo rightclaw = null;
     public Servo lefttail = null;
     public Servo righttail = null;
+    public Servo arm = null;
     public DistanceSensor leftSensor;
     public DistanceSensor rightSensor;
     private Orientation angles;
@@ -44,6 +51,8 @@ public class  RobotMap {
     float PDout = 0;
     //1120 counts per rotation
     double COUNTS_PER_INCH = 64.81;
+    double SCALE_FACTOR = 255;
+
 
     //HardwareMap hwMap =  null;
 
@@ -63,12 +72,17 @@ public class  RobotMap {
         leftBack = ahwmap.get(DcMotor.class, "left_back");
         rightBack = ahwmap.get(DcMotor.class, "right_back");
         lift = ahwmap.get(DcMotor.class, "lift");
+        extendy = ahwmap.get(DcMotor.class, "extendy");
         imu = ahwmap.get(BNO055IMU.class, "imu");
 
         leftclaw = ahwmap.get(Servo.class, "left_claw");
-        rightclaw = ahwmap.get(Servo.class, "right_claw");
         lefttail = ahwmap.get(Servo.class, "left_tail");
         righttail = ahwmap.get(Servo.class, "right_tail");
+        arm = ahwmap.get(Servo.class, "arm");
+
+        skyStone = ahwmap.get(ColorSensor.class,"skystone");//this was Gran's fault, saved by Yung Nigil//
+        distanceSensor = ahwmap.get(DistanceSensor.class,"skystone");
+        line = ahwmap.get(ColorSensor.class, "line");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -78,6 +92,18 @@ public class  RobotMap {
         leftBack.setDirection(DcMotor.Direction.FORWARD);
         rightBack.setDirection(DcMotor.Direction.REVERSE);
 
+        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+    }
+    public void resetEncoders(){
         leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -99,6 +125,7 @@ public class  RobotMap {
         setMotor_bl(0);
         setMotor_fl(0);
         setMotor_fr(0);
+        sleep(500);
     }
 
     public synchronized void turn(double power, long time) throws InterruptedException {
@@ -112,6 +139,29 @@ public class  RobotMap {
         setMotor_br(0);
         setMotor_fr(0);
     }
+
+    public synchronized void strafeRightForwardTime(double power, long time) throws InterruptedException {
+        setMotor_fr(-power+.2);
+        setMotor_bl(-power+.2);
+        setMotor_fl(power+.2);
+        setMotor_br(power+.2);
+        sleep(time);
+        setMotor_fr(0);
+        setMotor_bl(0);
+        setMotor_fl(0);
+        setMotor_br(0);
+    }
+    public synchronized void strafeLeftForwardTime(double power, long time) throws InterruptedException {
+        setMotor_fr(power + .2);
+        setMotor_bl(power + .2);
+        setMotor_fl(-power + .2);
+        setMotor_br(-power + .2);
+        sleep(time);
+        setMotor_fr(0);
+        setMotor_bl(0);
+        setMotor_fl(0);
+        setMotor_br(0);
+    }
     public synchronized void strafeLeftTime(double power, long time) throws InterruptedException {
         setMotor_fr(power);
         setMotor_bl(power);
@@ -122,6 +172,7 @@ public class  RobotMap {
         setMotor_bl(0);
         setMotor_fl(0);
         setMotor_br(0);
+        sleep(250);
 
     }
     public synchronized void strafeRightTime(double power, long time) throws InterruptedException {
@@ -134,6 +185,7 @@ public class  RobotMap {
         setMotor_bl(0);
         setMotor_fl(0);
         setMotor_br(0);
+        sleep(250);
     }
 
     public synchronized void strafeLeft() throws InterruptedException {
@@ -168,14 +220,14 @@ public class  RobotMap {
 
     }
 
-    public synchronized void pinch(){
-        leftclaw.setPosition(1);
-        rightclaw.setPosition(0);
+    /*public synchronized void pinch(){
+        leftclaw.setPosition(.3);
+        rightclaw.setPosition(.69);
     }
     public synchronized void notPinch(){
-        leftclaw.setPosition(.6);
+        leftclaw.setPosition(.69);
         rightclaw.setPosition(.4);
-    }
+    }*/
 
 
     public synchronized void setMotor_fl(double power) {
@@ -208,6 +260,21 @@ public class  RobotMap {
     public synchronized void openTail(){
         lefttail.setPosition(.5);
         righttail.setPosition(1);
+    }
+
+    public float[] hsv(){
+        float hsvValues[] = {0F, 0F, 0F};
+        Color.RGBToHSV((int) (skyStone.red() * SCALE_FACTOR),
+                (int) (skyStone.green() * SCALE_FACTOR),
+                (int) (skyStone.blue() * SCALE_FACTOR),
+                hsvValues);
+        return hsvValues;
+    }
+    public float linered(){
+        return line.red();
+    }
+    public float lineblue         (){
+        return line.blue();
     }
 
     public void mechanumDrive(float forward, float strafe, float rotation){
@@ -252,7 +319,7 @@ public class  RobotMap {
         return accel;
     }
 
-    public void Gyroturn(float degrees) {
+    public void gyroturn(float degrees) throws InterruptedException {
 
         leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -260,7 +327,7 @@ public class  RobotMap {
         rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
-        float Kp = (float) 0.012;
+        float Kp = (float) 0.02;
         float Kd = (float) 0.0001;
 
         while (true) {
@@ -285,23 +352,85 @@ public class  RobotMap {
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        sleep(500);
+    }
+
+    public void gyroStrafe(double power, double target,long time) throws InterruptedException {
+
+        leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
-/*        imu = ahwmap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
+        float Kp = (float) 0.015;
+        float Kd = (float) 0.0001;
 
-        sensorRange = ahwmap.get(DistanceSensor.class, "sensor_range");
+        double out = 0;
 
-        Rev2mDistanceSensor sensorTimeOfFlight = (Rev2mDistanceSensor)sensorRange;*/
+        ElapsedTime strafeTime = new ElapsedTime();
+
+        while (true) {
+            out = Kp * (getHeading()-target);
+            leftBack.setPower(-power + out);
+            leftFront.setPower(power + out);
+            rightBack.setPower(power - out);
+            rightFront.setPower(-power - out);
+            //preTime = currentTime;
+            if (strafeTime.milliseconds() > time) {
+                leftBack.setPower(0);
+                rightBack.setPower(0);
+                rightFront.setPower(0);
+                leftFront.setPower(0);
+                break;
+            }
+        }
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        sleep(500);
+    }
+    public void gyroDrive(double power, double target, boolean input) throws InterruptedException {
+
+        leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
+        float Kp = (float) 0.015;
+        float Kd = (float) 0.0001;
+
+        double out = 0;
+
+        ElapsedTime strafeTime = new ElapsedTime();
+
+        while (input) {
+            out = Kp * (getHeading()-target);
+            leftBack.setPower(power + out);
+            leftFront.setPower(power + out);
+            rightBack.setPower(power - out);
+            rightFront.setPower(power - out);
+            //preTime = currentTime;
+        }
+        leftBack.setPower(0);
+        rightBack.setPower(0);
+        rightFront.setPower(0);
+        leftFront.setPower(0);
+
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        sleep(500);
     }
 
 
     public void encoderDrive(double speed,
 
 
-                                     double inches) {
+                                     double inches) throws InterruptedException {
 
 
         int newLeftBackTarget;
@@ -399,6 +528,7 @@ public class  RobotMap {
         rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        sleep(500);
 
         }
     }

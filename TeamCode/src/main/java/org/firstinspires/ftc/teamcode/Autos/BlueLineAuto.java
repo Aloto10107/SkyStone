@@ -51,8 +51,8 @@ public class BlueLineAuto extends LinearOpMode {
 
         waitForStart();
 
-        robot.encoderDrive(.25,36);
-        robot.strafeRightTime(.5,1500);
+        robot.encoderDrive(.25,30);
+        robot.strafeLeftTime(.5,1500);
 
 
 

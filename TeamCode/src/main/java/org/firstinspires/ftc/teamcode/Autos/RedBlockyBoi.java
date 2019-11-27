@@ -35,8 +35,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.RobotMap;
 
 
-@Autonomous(name="BlueWaffle", group="LinearOpMode")
-public class BlueWaffle extends LinearOpMode {
+@Autonomous(name="RedBlockyBoi", group="LinearOpMode")
+public class RedBlockyBoi extends LinearOpMode {
     RobotMap robot = new RobotMap();
 
 
@@ -46,44 +46,29 @@ public class BlueWaffle extends LinearOpMode {
 
         robot.init(hardwareMap);
 
+        robot.imuINIT();
+
         telemetry.addLine("ready speatly");
         telemetry.update();
-
         waitForStart();
 
-        robot.openTail();
-        //robot.encoderDrive(.15,-45);
-        robot.encoderDrive(0.2, -35);
+        robot.encoderDrive(.5,30);
         sleep(500);
-        robot.closeTail();
+        robot.gyroturn(90);
+        telemetry.addLine("checkpoint");
+        telemetry.update();
         sleep(500);
-        robot.strafeRightTime(0.4, 2200);
-        sleep(500);
-        robot.drive(0.2, 5000);
-        sleep(500);
-        robot.openTail();
-        sleep(500);
-        robot.drive(0.2,1);
-        robot.strafeLeftForwardTime(0.4,6100);
 
+        sleep(500);
+        robot.encoderDrive(.5, 4);
+        sleep(500);
 
-      /*  robot.openTail();
-        //robot.encoderDrive(.15,-45);
-        robot.drive(-.25,2800);
         sleep(500);
-        robot.closeTail();
-        sleep(500);
-        robot.strafeRightTime(.3,3700);
-        sleep(500);
-        robot.drive(.25,4200);
-        sleep(500);
-        robot.openTail();
-        sleep(500);
-        robot.strafeLeftTime(.55,4500);*/
+        robot.encoderDrive(.5,-12);
+
 
 
 
 
     }
-
 }
