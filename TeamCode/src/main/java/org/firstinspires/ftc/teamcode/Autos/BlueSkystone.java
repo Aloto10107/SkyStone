@@ -54,7 +54,6 @@ public class BlueSkystone extends LinearOpMode {
     RobotMap robot = new RobotMap();
 
 
-
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
@@ -67,10 +66,10 @@ public class BlueSkystone extends LinearOpMode {
         telemetry.update();
 
         waitForStart();
-        robot.encoderDrive(0.5,22);
-        robot.gyroturn(-90);
+        robot.encoderDrive(0.5, 22);
+        robot.gyroturn(90);
         robot.drive(-0.5, 500);
-        while (robot.hsv()[0]<60){
+        while (robot.hsv()[0] < 60) {
 
             robot.setMotor_br(.3);
             robot.setMotor_bl(.3);
@@ -82,20 +81,20 @@ public class BlueSkystone extends LinearOpMode {
         robot.setMotor_fr(0);
         robot.setMotor_fl(0);
         sleep(500);
-        robot.strafeRightTime(.35,800);
-        robot.arm.setPosition(.3);
-        sleep(500);
-        robot.strafeLeftTime(.5,3500);
+        robot.strafeRightTime(.35, 800);
+        robot.arm.setPosition(.4);
+        sleep(1500);
+        robot.encoderDrive(.5,-6);
+        robot.strafeLeftTime(.5, 3500);
         while (robot.lineblue() < 100) {
-            robot.setMotor_br(.5);
-            robot.setMotor_bl(.5);
-            robot.setMotor_fr(.5);
-            robot.setMotor_fl(.5);
+            robot.setMotor_br(.5 - (.015 * (robot.getHeading() - 90)));
+            robot.setMotor_bl(.5 + (.015 * (robot.getHeading() - 90)));
+            robot.setMotor_fr(.5 - (.015 * (robot.getHeading() - 90)));
+            robot.setMotor_fl(.5 + (.015 * (robot.getHeading() - 90)));
         }
-        robot.encoderDrive(.5,15);
-        robot.arm.setPosition(.8);
+        robot.encoderDrive(.5, 15);
+        robot.arm.setPosition(.7);
         sleep(500);
-        robot.encoderDrive(.5,-15);
-
+        robot.encoderDrive(.5, -15);
     }
 }

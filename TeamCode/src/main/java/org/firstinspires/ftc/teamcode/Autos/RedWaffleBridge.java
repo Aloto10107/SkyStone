@@ -35,8 +35,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.RobotMap;
 
 
-@Autonomous(name="RedWaffle", group="LinearOpMode")
-public class RedWaffle extends LinearOpMode {
+@Autonomous(name="RedWaffleBridge", group="LinearOpMode")
+public class RedWaffleBridge extends LinearOpMode {
     RobotMap robot = new RobotMap();
 
 
@@ -67,6 +67,7 @@ public class RedWaffle extends LinearOpMode {
         sleep(500);
         //robot.drive(0.2,1);
         robot.gyroStrafe(.5,0,5000);
+        robot.gyroDrive(.5,0,1000);
 
     }
 }

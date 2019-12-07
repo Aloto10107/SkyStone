@@ -391,7 +391,7 @@ public class  RobotMap {
         rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         sleep(500);
     }
-    public void gyroDrive(double power, double target, boolean input) throws InterruptedException {
+    public void gyroDrive(double power, double target, long time) throws InterruptedException {
 
         leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -404,15 +404,22 @@ public class  RobotMap {
 
         double out = 0;
 
-        ElapsedTime strafeTime = new ElapsedTime();
+        ElapsedTime driveTime = new ElapsedTime();
 
-        while (input) {
+        while (true) {
             out = Kp * (getHeading()-target);
             leftBack.setPower(power + out);
             leftFront.setPower(power + out);
             rightBack.setPower(power - out);
             rightFront.setPower(power - out);
             //preTime = currentTime;
+            if (driveTime.milliseconds() > time) {
+                leftBack.setPower(0);
+                rightBack.setPower(0);
+                rightFront.setPower(0);
+                leftFront.setPower(0);
+                break;
+            }
         }
         leftBack.setPower(0);
         rightBack.setPower(0);

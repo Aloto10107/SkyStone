@@ -83,8 +83,9 @@ public class RedSkystone extends LinearOpMode {
         robot.setMotor_fl(0);
         sleep(500);
         robot.strafeRightTime(.35,800);
-        robot.arm.setPosition(.3);
-        sleep(500);
+        robot.arm.setPosition(.4);
+        sleep(1500);
+        robot.encoderDrive(.5,-6);
         //robot.strafeLeftTime(.5,3500);
         robot.gyroStrafe(-.5,90,3500);
         while (robot.linered() < 100) {
@@ -94,7 +95,7 @@ public class RedSkystone extends LinearOpMode {
             robot.setMotor_fl(-.5 + (.015*(robot.getHeading()-90)));
         }
         robot.encoderDrive(.5,-15);
-        robot.arm.setPosition(.8);
+        robot.arm.setPosition(.7);
         sleep(500);
         robot.encoderDrive(.5,15);
 //Big Cliff, Lil Chenster, and Yung Nigil back at the grind//
