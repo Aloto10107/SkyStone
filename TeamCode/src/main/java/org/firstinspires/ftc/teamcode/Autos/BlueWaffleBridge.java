@@ -46,12 +46,37 @@ public class BlueWaffleBridge extends LinearOpMode {
 
         robot.init(hardwareMap);
 
+        robot.imuINIT();
+
         telemetry.addLine("ready speatly");
         telemetry.update();
 
         waitForStart();
 
         robot.openTail();
+        robot.gyroDrive(-.25,0,5000);
+        sleep(500);
+        robot.closeTail();
+        //robot.gyroStrafe(-.4,0,2500);
+        sleep(500);
+        robot.gyroDrive(.25,0,1000);
+        robot.rightArc(.5,3500);
+        robot.openTail();
+        sleep(500);
+        robot.drive(-.5,3000);
+        while (robot.lineblue() < 100) {
+            robot.setMotor_br(.5 - (.015*(robot.getHeading()-90)));
+            robot.setMotor_bl(.5 + (.015*(robot.getHeading()-90)));
+            robot.setMotor_fr(.5 - (.015*(robot.getHeading()-90)));
+            robot.setMotor_fl(.5 + (.015*(robot.getHeading()-90)));
+        }
+        robot.setMotor_br(0);
+        robot.setMotor_bl(0);
+        robot.setMotor_fr(0);
+        robot.setMotor_fl(0);
+        robot.gyroStrafe(-.5,-90,2000);
+
+/*        robot.openTail();
         //robot.encoderDrive(.15,-45);
         robot.encoderDrive(0.5, -35);
         sleep(500);
@@ -67,7 +92,7 @@ public class BlueWaffleBridge extends LinearOpMode {
         sleep(500);
         //robot.drive(0.2,1);
         robot.gyroStrafe(-.5,0,5000);
-        robot.gyroDrive(.5,0,1000);
+        robot.gyroDrive(.5,0,1000);*/
 
 
     }

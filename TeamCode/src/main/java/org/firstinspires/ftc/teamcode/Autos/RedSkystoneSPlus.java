@@ -95,7 +95,7 @@ public class RedSkystoneSPlus extends LinearOpMode {
             robot.setMotor_fl(-.5 + (.015*(robot.getHeading()-90)));
         }
         robot.encoderDrive(.5,-15);
-        robot.arm.setPosition(.8);
+        robot.arm.setPosition(.55);
         robot.encoderDrive(.5,-15);
         robot.gyroturn(180);
 

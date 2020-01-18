@@ -33,8 +33,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
  * An OpMode is a 'program' that runs in either the autonomous or the teleop period of an FTC match.
@@ -100,8 +98,9 @@ public class TeleOP extends OpMode
 
         forward = (gamepad1.right_trigger-gamepad1.left_trigger);
 
-        robot.mechanumDrive((float) Math.pow(forward,3),-(float)Math.pow(gamepad1.right_stick_x,3), -(float)Math.pow(gamepad1.left_stick_x,3));
+        //robot.mechanumDrive((float) Math.pow(forward,3),-(float)Math.pow(gamepad1.right_stick_x,3), -(float)Math.pow(gamepad1.left_stick_x,3));
 
+        robot.mechanumDrive(forward,-gamepad1.right_stick_x, -gamepad1.left_stick_x);
         if (gamepad2.right_bumper){
             robot.setLift(1);
         }
@@ -118,17 +117,31 @@ public class TeleOP extends OpMode
             robot.setLift(0);
 https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
 
-        if (gamepad2.right_stick_button){
-            robot.arm.setPosition(.7);
+        /*if (gamepad2.right_stick_button){
+            robot.arm.setPosition(0.5);
         }
+        else {
+            robot.arm.setPosition(-0.5);
+        }*/
 
-        if (gamepad2.a) {
-            robot.leftclaw.setPosition(.9);
+        if (!gamepad2.a) {
+            robot.leftclaw.setPosition(0.5);
 
         }
         else{
-            robot.leftclaw.setPosition(.5);
+            robot.leftclaw.setPosition(.12);
         }
+
+
+/*        if (!gamepad2.a) {
+            robot.leftclaw.setPosition(1);
+
+        }
+        else{
+            robot.leftclaw.setPosition(-1);
+        }*/
+
+
         if(gamepad2.right_trigger > 0.8 && gamepad2.left_trigger < 0.8) {
             robot.extendy.setPower(1);
         }
@@ -146,7 +159,7 @@ https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
         else{
             robot.openTail();
     }
-        telemetry.addData("linered", robot.linered());
+        /*telemetry.addData("linered", robot.linered());
         telemetry.addData("lineblue", robot.lineblue());
         telemetry.addData("distance", robot.distanceSensor.getDistance(DistanceUnit.CM));
         telemetry.addData("rightfront",robot.rightFront.getCurrentPosition());
@@ -155,9 +168,10 @@ https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
         telemetry.addData("leftback",robot.leftBack.getCurrentPosition());
         telemetry.addData("heading",robot.getHeading());
         telemetry.addData("leftRight",robot.getPos());
-        telemetry.addData("leftclaw",robot.leftclaw.getPosition());
+        telemetry.addData("leftclaw",robot.leftclaw.getPosition());*/
+        //telemetry.addData("smallEyes", robot.smallEyes.getDistance(DistanceUnit.MM));
         telemetry.update();
-        }
+    }
 
     @Override
     public void stop() {

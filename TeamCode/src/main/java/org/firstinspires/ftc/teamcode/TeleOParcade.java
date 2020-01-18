@@ -100,7 +100,7 @@ public class TeleOParcade extends OpMode
 
         forward = (gamepad1.right_trigger-gamepad1.left_trigger);
 
-        robot.mechanumDrive((float) Math.pow(gamepad1.left_stick_y,3),-(float)Math.pow(gamepad1.right_stick_x,3), -(float)Math.pow(gamepad1.left_stick_x,3));
+        robot.mechanumDrive(-(float) Math.pow(gamepad1.left_stick_y,3), -(float)Math.pow(gamepad1.left_stick_x,3),-(float)Math.pow(gamepad1.right_stick_x,3));
 
         if (gamepad2.right_bumper){
             robot.setLift(1);

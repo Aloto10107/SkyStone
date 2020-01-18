@@ -46,12 +46,39 @@ public class RedWaffle extends LinearOpMode {
 
         robot.init(hardwareMap);
 
+        robot.imuINIT();
+
         telemetry.addLine("ready speatly");
         telemetry.update();
 
         waitForStart();
 
         robot.openTail();
+        robot.gyroDrive(-.25,0,5000);
+        sleep(500);
+        robot.closeTail();
+        //robot.gyroStrafe(-.4,0,2500);
+        sleep(500);
+        robot.gyroDrive(.25,0,2000);
+        robot.leftArc(.5,4000);
+        robot.openTail();
+        sleep(500);
+        robot.drive(-.5,3000);
+        while (robot.linered() < 100) {
+            robot.setMotor_br(.5 - (.015*(robot.getHeading()+90)));
+            robot.setMotor_bl(.5 + (.015*(robot.getHeading()+90)));
+            robot.setMotor_fr(.5 - (.015*(robot.getHeading()+90)));
+            robot.setMotor_fl(.5 + (.015*(robot.getHeading()+90)));
+        }
+        robot.setMotor_br(0);
+        robot.setMotor_bl(0);
+        robot.setMotor_fr(0);
+        robot.setMotor_fl(0);
+        robot.gyroStrafe(-.5,-90,2000);
+
+
+
+        /*robot.openTail();
         //robot.encoderDrive(.15,-45);
         robot.encoderDrive(0.5, -35);
         sleep(500);
@@ -66,7 +93,7 @@ public class RedWaffle extends LinearOpMode {
         robot.openTail();
         sleep(500);
         //robot.drive(0.2,1);
-        robot.gyroStrafe(.5,0,5000);
+        robot.gyroStrafe(.5,0,5000);*/
 
     }
 }

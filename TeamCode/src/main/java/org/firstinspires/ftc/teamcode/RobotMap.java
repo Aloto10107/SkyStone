@@ -37,6 +37,7 @@ public class  RobotMap {
     public Servo arm = null;
     public DistanceSensor leftSensor;
     public DistanceSensor rightSensor;
+    //public DistanceSensor smallEyes;
     private Orientation angles;
     private Acceleration acceleration;
     public BNO055IMU imu;
@@ -83,15 +84,21 @@ public class  RobotMap {
         skyStone = ahwmap.get(ColorSensor.class,"skystone");//this was Gran's fault, saved by Yung Nigil//
         distanceSensor = ahwmap.get(DistanceSensor.class,"skystone");
         line = ahwmap.get(ColorSensor.class, "line");
+        //smallEyes = ahwmap.get(DistanceSensor.class, "smallEyes");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
 
-        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        leftFront.setDirection(DcMotor.Direction.FORWARD);
         rightFront.setDirection(DcMotor.Direction.FORWARD);
         leftBack.setDirection(DcMotor.Direction.FORWARD);
         rightBack.setDirection(DcMotor.Direction.REVERSE);
 
+        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+/*
         leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -101,6 +108,7 @@ public class  RobotMap {
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+*/
 
     }
     public void resetEncoders(){
@@ -210,6 +218,23 @@ public class  RobotMap {
         setMotor_bl(0);
         setMotor_fr(0);
     }
+    public synchronized void leftArc(double power, long time) throws InterruptedException {
+        setMotor_fl(power);
+        setMotor_bl(power);
+        sleep(time);
+        setMotor_fl(0);
+        setMotor_bl(0);
+        sleep(500);
+    }
+    public synchronized void rightArc(double power, long time) throws InterruptedException {
+        setMotor_fr(power);
+        setMotor_br(power);
+        sleep(time);
+        setMotor_fl(0);
+        setMotor_bl(0);
+        sleep(500);
+    }
+
 
     public synchronized void setLift(double power){
         lift.setPower(power);
@@ -253,14 +278,24 @@ public class  RobotMap {
 
         rightBack.setPower(convertedPower);
     }
-    public synchronized void closeTail(){
+    public synchronized void closeTail() {
        lefttail.setPosition(1);
        righttail.setPosition(.5);
     }
-    public synchronized void openTail(){
+    public synchronized void openTail() {
         lefttail.setPosition(.5);
         righttail.setPosition(1);
     }
+    /*public boolean Open(){
+        boolean Open;
+        if (robot.smallEyes.getDistance(DistanceUnit.CM) < .1) {
+            Open = true;
+        }
+        else {
+            Open = false;
+        }
+        return Open;
+    }*/
 
     public float[] hsv(){
         float hsvValues[] = {0F, 0F, 0F};
@@ -327,7 +362,7 @@ public class  RobotMap {
         rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
-        float Kp = (float) 0.02;
+        float Kp = (float) 0.03;
         float Kd = (float) 0.0001;
 
         while (true) {
@@ -502,16 +537,16 @@ public class  RobotMap {
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
-        leftBack.setPower(speed);
+        leftBack.setPower(speed *1.5);
 
 
-        rightBack.setPower(speed);
+        rightBack.setPower(speed*1.5);
 
 
-        leftFront.setPower(speed);
+        leftFront.setPower(speed*1.5);
 
 
-        rightFront.setPower(speed);
+        rightFront.setPower(speed*1.5);
 
         while (rightFront.isBusy() && leftFront.isBusy() && rightBack.isBusy() && leftBack.isBusy()){
 
