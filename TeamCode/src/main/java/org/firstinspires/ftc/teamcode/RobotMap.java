@@ -35,6 +35,7 @@ public class  RobotMap {
     public Servo lefttail = null;
     public Servo righttail = null;
     public Servo arm = null;
+    public Servo capLatch = null;
     public DistanceSensor leftSensor;
     public DistanceSensor rightSensor;
     //public DistanceSensor smallEyes;
@@ -75,6 +76,7 @@ public class  RobotMap {
         lift = ahwmap.get(DcMotor.class, "lift");
         extendy = ahwmap.get(DcMotor.class, "extendy");
         imu = ahwmap.get(BNO055IMU.class, "imu");
+        capLatch = ahwmap.get(Servo.class, "capLatch");
 
         leftclaw = ahwmap.get(Servo.class, "left_claw");
         lefttail = ahwmap.get(Servo.class, "left_tail");

@@ -58,6 +58,7 @@ public class TeleOP extends OpMode
     private DcMotor leftBack = null;
     private DcMotor rightBack = null;
 
+
     float forward;
     /*
      * Code to run ONCE when the driver hits INIT
@@ -71,6 +72,8 @@ public class TeleOP extends OpMode
         robot.init(hardwareMap);
 
         robot.imuINIT();
+
+
 
     }
 
@@ -94,6 +97,9 @@ public class TeleOP extends OpMode
      */
     @Override
     public void loop() {
+        //set skystone arm position
+        //robot.arm.setPosition(0.47);
+
         // Setup a variable for each drive wheel to save power level for telemetry
 
         forward = (gamepad1.right_trigger-gamepad1.left_trigger);
@@ -125,11 +131,18 @@ https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
         }*/
 
         if (!gamepad2.a) {
-            robot.leftclaw.setPosition(0.5);
+            robot.leftclaw.setPosition(0.12);
 
         }
         else{
-            robot.leftclaw.setPosition(.12);
+            robot.leftclaw.setPosition(0.5);
+        }
+        if (!gamepad2.x) {
+            robot.capLatch.setPosition(0.9);
+        }
+        else{
+            robot.capLatch.setPosition(0);
+
         }
 
 
