@@ -32,6 +32,7 @@ public class  RobotMap {
     public DcMotor lift = null;
     public DcMotor extendy = null;
     public Servo leftclaw = null;
+    public Servo rightclaw = null;
     public Servo lefttail = null;
     public Servo righttail = null;
     public Servo arm = null;
@@ -79,7 +80,9 @@ public class  RobotMap {
         capLatch = ahwmap.get(Servo.class, "capLatch");
 
         leftclaw = ahwmap.get(Servo.class, "left_claw");
+        rightclaw = ahwmap.get(Servo.class, "right_claw");
         lefttail = ahwmap.get(Servo.class, "left_tail");
+
         righttail = ahwmap.get(Servo.class, "right_tail");
         arm = ahwmap.get(Servo.class, "arm");
 
@@ -236,10 +239,25 @@ public class  RobotMap {
         setMotor_bl(0);
         sleep(500);
     }
+    public synchronized void bigExtend(double power, long time) throws InterruptedException {
+        setExtendy(power);
+        sleep(time);
+        setExtendy(0);
+        sleep(500);
+    }
+    public synchronized void skizzorLift(double power, long time) throws InterruptedException {
+        setLift(power);
+        setLift(time);
+        sleep(500);
+    }
+
 
 
     public synchronized void setLift(double power){
         lift.setPower(power);
+    }
+    public synchronized void setExtendy(double power){
+        extendy.setPower(power);
     }
 
     public synchronized int getPos(){
@@ -247,14 +265,14 @@ public class  RobotMap {
 
     }
 
-    /*public synchronized void pinch(){
-        leftclaw.setPosition(.3);
-        rightclaw.setPosition(.69);
-    }
     public synchronized void notPinch(){
-        leftclaw.setPosition(.69);
-        rightclaw.setPosition(.4);
-    }*/
+        leftclaw.setPosition(.5);
+        rightclaw.setPosition(0.12);
+    }
+    public synchronized void pinch(){
+        leftclaw.setPosition(.01);
+        rightclaw.setPosition(.61);
+    }
 
 
     public synchronized void setMotor_fl(double power) {
@@ -575,5 +593,116 @@ public class  RobotMap {
         sleep(500);
 
         }
+    public void encoderGyroDrive(double speed, double target,
+
+
+                             double inches) throws InterruptedException {
+
+
+        int newLeftBackTarget;
+
+
+        int newrightBackTarget;
+
+
+        int newLeftFrontTarget;
+
+
+        int newRightFrontTarget;
+
+
+        boolean rightAhead = false;
+
+
+        boolean leftAhead = false;
+
+        double out = 0;
+
+        float Kp = (float) 0.015;
+
+
+        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+        newLeftBackTarget = (int) (inches * COUNTS_PER_INCH);
+
+
+        newrightBackTarget = (int) (inches * COUNTS_PER_INCH);
+
+
+        newLeftFrontTarget = (int) (inches * COUNTS_PER_INCH);
+
+
+        newRightFrontTarget = (int) (inches * COUNTS_PER_INCH);
+
+
+        leftBack.setTargetPosition(newLeftBackTarget);
+
+
+        rightBack.setTargetPosition(newrightBackTarget);
+
+
+        leftFront.setTargetPosition(newLeftFrontTarget);
+
+
+        rightFront.setTargetPosition(newRightFrontTarget);
+
+
+        leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+        leftBack.setPower(speed);
+
+
+        rightBack.setPower(speed);
+
+
+        leftFront.setPower(speed);
+
+
+        rightFront.setPower(speed);
+
+        while (rightFront.isBusy() && leftFront.isBusy() && rightBack.isBusy() && leftBack.isBusy()){
+
+
+            out = Kp * (getHeading()-target);
+            leftBack.setPower(speed + out);
+            leftFront.setPower(speed + out);
+            rightBack.setPower(speed - out);
+            rightFront.setPower(speed - out);
+
+        }
+
+        leftBack.setPower(0);
+
+
+        rightBack.setPower(0);
+
+
+        leftFront.setPower(0);
+
+
+        rightFront.setPower(0);
+
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        sleep(500);
+
+    }
     }
 

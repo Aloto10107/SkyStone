@@ -60,7 +60,8 @@ public class BlueWaffleBridge extends LinearOpMode {
         //robot.gyroStrafe(-.4,0,2500);
         sleep(500);
         robot.gyroDrive(.25,0,2000);
-        robot.rightArc(.5,4000);
+        robot.rightArc(.5,3500);
+        robot.drive(-.5,100);
         robot.openTail();
         sleep(500);
         robot.drive(-.5,3000);

@@ -61,6 +61,7 @@ public class RedWaffleBridge extends LinearOpMode {
         sleep(500);
         robot.gyroDrive(.25,0,2000);
         robot.leftArc(.5,4000);
+        robot.drive(-.5,100);
         robot.openTail();
         sleep(500);
         robot.drive(-.5,3000);

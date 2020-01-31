@@ -98,7 +98,7 @@ public class TeleOP extends OpMode
     @Override
     public void loop() {
         //set skystone arm position
-        //robot.arm.setPosition(0.47);
+        robot.arm.setPosition(0.7);
 
         // Setup a variable for each drive wheel to save power level for telemetry
 
@@ -132,10 +132,12 @@ https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
 
         if (!gamepad2.a) {
             robot.leftclaw.setPosition(0.12);
+            robot.rightclaw.setPosition(0.5);
 
         }
         else{
             robot.leftclaw.setPosition(0.5);
+            robot.rightclaw.setPosition(0.12);
         }
         if (!gamepad2.x) {
             robot.capLatch.setPosition(0.9);

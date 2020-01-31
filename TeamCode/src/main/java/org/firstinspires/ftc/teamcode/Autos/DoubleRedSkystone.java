@@ -47,12 +47,11 @@ import org.firstinspires.ftc.teamcode.RobotMap;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="RedSkystone", group="Linear Opmode")
+@Autonomous(name="DoubleRedSkystone", group="Linear Opmode")
 //@Disabled
-public class RedSkystone extends LinearOpMode {
+public class DoubleRedSkystone extends LinearOpMode {
 
     RobotMap robot = new RobotMap();
-
 
 
     public void runOpMode() throws InterruptedException {
@@ -61,53 +60,70 @@ public class RedSkystone extends LinearOpMode {
         FtcDashboard dashboard = FtcDashboard.getInstance();
 
         robot.imuINIT();
+
         telemetry.addLine("ready speagaty");
         telemetry.update();
 
         waitForStart();
         robot.resetEncoders();
-        robot.encoderDrive(0.5,22);
-        robot.gyroturn(90);
-        robot.drive(0.5, 350);
-        while (robot.hsv()[0]<60){
+        robot.encoderGyroDrive(0.7, 0, 23);
+        robot.notPinch();
+        robot.gyroStrafe(-1, 0, 350);
+        while (robot.hsv()[0] < 60) {
+            robot.setMotor_bl(-0.6);
+            robot.setMotor_fl(0.6);
+            robot.setMotor_br(0.6);
+            robot.setMotor_fr(-0.6);
 
-            robot.setMotor_br(-.3);
-            robot.setMotor_bl(-.3);
-            robot.setMotor_fr(-.3);
-            robot.setMotor_fl(-.3);
+
         }
-        robot.setMotor_br(0);
-        robot.setMotor_bl(0);
         robot.setMotor_fr(0);
+        robot.setMotor_br(0);
         robot.setMotor_fl(0);
+        robot.setMotor_bl(0);
+        robot.gyroStrafe(0.3, 0, 350);
+        /*sleep(500);
+        robot.bigExtend(0.3,800); (this goes back in for comp)*/
         sleep(500);
-        //robot.strafeRightTime(.35,1000);
-        robot.gyroStrafe(0.5,90,1000);
-        robot.arm.setPosition(.4);
-        sleep(1500);
-        robot.encoderDrive(.5,-6);
-        //robot.strafeLeftTime(.5,3500);
-        robot.gyroStrafe(-.5,90,4500);
-        robot.gyroStrafe(.5, 90, 300);
-       //robot.gyroturn(0);
+        robot.drive(0.3, 800);
+        sleep(500);
+        robot.pinch();
+        robot.drive(0.2,200);
+        sleep(700);
+        robot.drive(-0.5, 1000);
+        robot.gyroStrafe(1, 0, 2500);
+        robot.notPinch();
+        robot.gyroStrafe(-1, 0, 4000);
+        while (robot.hsv()[0] < 60) {
+            robot.setMotor_bl(-0.6);
+            robot.setMotor_fl(0.6);
+            robot.setMotor_br(0.6);
+            robot.setMotor_fr(-0.6);
+
+        }
+        robot.setMotor_fr(0);
+        robot.setMotor_br(0);
+        robot.setMotor_fl(0);
+        robot.setMotor_bl(0);
+       robot.gyroStrafe(0.5, 0, 200);
+        sleep(500);;
+        robot.notPinch();
+        robot.drive(0.3,800);
+        sleep(500);
+        robot.pinch();
+        robot.drive(0.2,200);
+        sleep(700);
+        robot.drive(-0.3,2000 );
+        robot.gyroStrafe(1, 0 , 3500);
+        robot.notPinch();
         while (robot.linered() < 100) {
             robot.setMotor_br(-.5 - (.015*(robot.getHeading()-90)));
             robot.setMotor_bl(-.5 + (.015*(robot.getHeading()-90)));
-            robot.setMotor_fr(-.5 - (.015*(robot.getHeading()-90)));
-            robot.setMotor_fl(-.5 + (.015*(robot.getHeading()-90)));
+            robot.setMotor_fr(-.5 +(.015*(robot.getHeading()-90)));
+            robot.setMotor_fl(-.5 - (.015*(robot.getHeading()-90)));
         }
-        /*while (robot.linered() < 100) {
-/*            robot.setMotor_br(.5 - (.015*(robot.getHeading())));
-            robot.setMotor_bl(-.5 + (.015*(robot.getHeading())));
-            robot.setMotor_fr(-.5 - (.015*(robot.getHeading())));
-            robot.setMotor_fl(.5 + (.015*(robot.getHeading())));
-        }*/
-        robot.gyroStrafe(.5,0,1000);
-        //robot.encoderDrive(.5,-15);
-        robot.arm.setPosition(.65);
-        sleep(500);
-        robot.encoderDrive(.5,15);
-        //robot.gyroStrafe(-.5,0,1000);
-//Big Cliff, Lil Chenster, and Yung Nigil back at the grind//
+        robot.gyroStrafe(0.6, 0, 500);
+
+
     }
 }

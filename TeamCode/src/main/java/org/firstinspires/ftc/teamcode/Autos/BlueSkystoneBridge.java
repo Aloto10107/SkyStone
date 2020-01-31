@@ -59,8 +59,8 @@ import org.firstinspires.ftc.teamcode.RobotMap;
             robot.arm.setPosition(.4);
             sleep(1500);
             robot.encoderDrive(.5,6);
-            robot.strafeLeftTime(.5, 3500);
-            robot.gyroStrafe(-.5, 90, 300);
+            robot.strafeLeftTime(.5, 2300);
+            //robot.gyroStrafe(-.5, 90, 300);
             while (robot.lineblue() < 100) {
                 robot.setMotor_br(.5 - (.015 * (robot.getHeading() - 90)));
                 robot.setMotor_bl(.5 + (.015 * (robot.getHeading() - 90)));
@@ -71,7 +71,7 @@ import org.firstinspires.ftc.teamcode.RobotMap;
             robot.arm.setPosition(.65);
             sleep(500);
             robot.encoderDrive(.5, -15);
-            robot.gyroStrafe(0.5, 90, 2500);
+            //robot.gyroStrafe(0.5, 90, 2500);
         }
 
 
