@@ -47,9 +47,9 @@ import org.firstinspires.ftc.teamcode.RobotMap;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="DoubleRedSkystone", group="Linear Opmode")
+@Autonomous(name="DoubleBlueSkystone", group="Linear Opmode")
 //@Disabled
-public class DoubleRedSkystone extends LinearOpMode {
+public class DoubleBlueSkystone extends LinearOpMode {
 
     RobotMap robot = new RobotMap();
 
@@ -70,10 +70,10 @@ public class DoubleRedSkystone extends LinearOpMode {
         robot.drive(0.5,1200);
         robot.gyroStrafe(-1, 0, 350);
         while (robot.hsv()[0] < 60) {
-            robot.setMotor_br(.75 - (.015*(robot.getHeading())));
-            robot.setMotor_bl(-.75 + (.015*(robot.getHeading())));
-            robot.setMotor_fr(-.75 - (.015*(robot.getHeading())));
-            robot.setMotor_fl(.75 + (.015*(robot.getHeading())));
+            robot.setMotor_br(-.75 - (.015*(robot.getHeading())));
+            robot.setMotor_bl(.75 + (.015*(robot.getHeading())));
+            robot.setMotor_fr(.75 - (.015*(robot.getHeading())));
+            robot.setMotor_fl(-.75 + (.015*(robot.getHeading())));
 
 
         }
@@ -98,11 +98,11 @@ public class DoubleRedSkystone extends LinearOpMode {
         sleep(500);
         robot.drive(0.2,200);*/
         robot.drive(-0.5, 700);
-        while (robot.linered() < 100) {
-            robot.setMotor_br(1 - (.015*(robot.getHeading())));
-            robot.setMotor_bl(-1 + (.015*(robot.getHeading())));
-            robot.setMotor_fr(-1 - (.015*(robot.getHeading())));
-            robot.setMotor_fl(1 + (.015*(robot.getHeading())));
+        while (robot.lineblue() < 100) {
+            robot.setMotor_br(-1 - (.015*(robot.getHeading())));
+            robot.setMotor_bl(1 + (.015*(robot.getHeading())));
+            robot.setMotor_fr(1 - (.015*(robot.getHeading())));
+            robot.setMotor_fl(-1 + (.015*(robot.getHeading())));
         }
         robot.gyroStrafe(1,0,750);
         robot.notPinch();
@@ -111,10 +111,10 @@ public class DoubleRedSkystone extends LinearOpMode {
         //second stone
         robot.gyroStrafe(-1,0,4000);
         while (robot.hsv()[0] < 60) {
-            robot.setMotor_br(.75 - (.015*(robot.getHeading())));
-            robot.setMotor_bl(-.75 + (.015*(robot.getHeading())));
-            robot.setMotor_fr(-.75 - (.015*(robot.getHeading())));
-            robot.setMotor_fl(.75 + (.015*(robot.getHeading())));
+            robot.setMotor_br(-.75 - (.015*(robot.getHeading())));
+            robot.setMotor_bl(.75 + (.015*(robot.getHeading())));
+            robot.setMotor_fr(.75 - (.015*(robot.getHeading())));
+            robot.setMotor_fl(-.75 + (.015*(robot.getHeading())));
 
 
         }
@@ -127,12 +127,12 @@ public class DoubleRedSkystone extends LinearOpMode {
         sleep(500);
         robot.skizzorLift(1,500);
         robot.drive(-0.5, 700);
-        robot.gyroturn(90);
-        while (robot.linered() < 100) {
-            robot.setMotor_br(-1 - (.015*(robot.getHeading()))-90);
-            robot.setMotor_bl(-1 + (.015*(robot.getHeading()))-90);
-            robot.setMotor_fr(-1 - (.015*(robot.getHeading()))-90);
-            robot.setMotor_fl(-1 + (.015*(robot.getHeading()))-90);
+        robot.gyroturn(-90);
+        while (robot.lineblue() < 100) {
+            robot.setMotor_br(-1 - (.015*(robot.getHeading()))+90);
+            robot.setMotor_bl(-1 + (.015*(robot.getHeading()))+90);
+            robot.setMotor_fr(-1 - (.015*(robot.getHeading()))+90);
+            robot.setMotor_fl(-1 + (.015*(robot.getHeading()))+90);
         }
         robot.gyroStrafe(1,0,750);
         robot.notPinch();

@@ -30,12 +30,14 @@
 package org.firstinspires.ftc.teamcode.Autos;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.RobotMap;
 
 
 @Autonomous(name="RedBlockyBoi", group="LinearOpMode")
+@Disabled
 public class RedBlockyBoi extends LinearOpMode {
     RobotMap robot = new RobotMap();
 

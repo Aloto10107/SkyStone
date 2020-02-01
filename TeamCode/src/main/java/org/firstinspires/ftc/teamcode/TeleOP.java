@@ -174,6 +174,7 @@ https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
         else{
             robot.openTail();
     }
+        telemetry.addData("skystone", robot.hsv()[0]);
         /*telemetry.addData("linered", robot.linered());
         telemetry.addData("lineblue", robot.lineblue());
         telemetry.addData("distance", robot.distanceSensor.getDistance(DistanceUnit.CM));

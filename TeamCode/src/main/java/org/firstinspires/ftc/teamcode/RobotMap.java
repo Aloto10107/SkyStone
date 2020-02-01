@@ -247,7 +247,8 @@ public class  RobotMap {
     }
     public synchronized void skizzorLift(double power, long time) throws InterruptedException {
         setLift(power);
-        setLift(time);
+        sleep(time);
+        setLift(0);
         sleep(500);
     }
 
