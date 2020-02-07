@@ -66,6 +66,7 @@ public class SingleRedSkystone extends LinearOpMode {
 
         waitForStart();
         robot.resetEncoders();
+        robot.bigExtend(1,1000);
         robot.notPinch();
         robot.drive(0.5,1200);
         robot.gyroStrafe(-1, 0, 350);

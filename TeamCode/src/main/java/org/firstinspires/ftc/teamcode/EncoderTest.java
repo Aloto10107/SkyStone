@@ -70,6 +70,8 @@ public class EncoderTest extends LinearOpMode {
     RobotMap robot = new RobotMap();
 
 
+
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -83,7 +85,8 @@ public class EncoderTest extends LinearOpMode {
 
         waitForStart();
         //robot.encoderDrive(0.5, 24);
-        robot.encoderGyroDrive(.5,0,24);
+        //robot.bigExtend(0.5, 8000);
+        robot.gyroDrive(.5,0,1000);
 
 
 

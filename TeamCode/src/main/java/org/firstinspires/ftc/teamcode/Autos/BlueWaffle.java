@@ -57,6 +57,7 @@ public class BlueWaffle extends LinearOpMode {
         robot.gyroDrive(-.25,0,5000);
         sleep(500);
         robot.closeTail();
+        robot.drive(-1,200);
         //robot.gyroStrafe(-.4,0,2500);
         sleep(500);
         robot.gyroDrive(.25,0,2000);
@@ -76,6 +77,7 @@ public class BlueWaffle extends LinearOpMode {
         robot.setMotor_bl(0);
         robot.setMotor_fr(0);
         robot.setMotor_fl(0);
+        robot.strafeRightTime(0.8,700);
 
 
 /*        robot.openTail();
