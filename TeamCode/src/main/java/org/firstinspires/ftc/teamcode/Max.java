@@ -47,9 +47,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="TeleOp", group="Iterative Opmode")
-//@Disabled
-public class TeleOP extends OpMode
+@TeleOp(name="Max", group="Iterative Opmode")
+//@DisabledTeleOp
+public class Max extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -107,10 +107,10 @@ public class TeleOP extends OpMode
         //robot.mechanumDrive((float) Math.pow(forward,3),-(float)Math.pow(gamepad1.right_stick_x,3), -(float)Math.pow(gamepad1.left_stick_x,3));
 
         robot.mechanumDrive(forward,-gamepad1.right_stick_x, -gamepad1.left_stick_x);
-        if (gamepad2.right_bumper){
+        if (gamepad1.right_bumper){
             robot.setLift(1);
         }
-        else if(gamepad2.left_bumper){
+        else if(gamepad1.left_bumper){
             robot.setLift(-1);
         }
 /*        else if(gamepad2.left_trigger>.8){
@@ -130,7 +130,7 @@ https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
             robot.arm.setPosition(-0.5);
         }*/
 
-        if (!gamepad2.a) {
+        if (!gamepad1.a) {
             robot.leftclaw.setPosition(0.61);
             robot.rightclaw.setPosition(0.1);
 
@@ -139,7 +139,7 @@ https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
             robot.leftclaw.setPosition(0.1);
             robot.rightclaw.setPosition(0.61);
         }
-        if (!gamepad2.x) {
+        if (!gamepad1.x) {
             robot.capLatch.setPosition(0.9);
         }
         else{
@@ -157,18 +157,18 @@ https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
         }*/
 
 
-        if(gamepad2.right_trigger > 0.8 && gamepad2.left_trigger < 0.8) {
+        if(!gamepad1.dpad_down && gamepad1.dpad_up) {
             robot.extendy.setPower(1);
         }
-        else if(gamepad2.left_trigger > 0.8 && gamepad2.right_trigger < 0.8){
+        else if(gamepad1.dpad_down && !gamepad1.dpad_up){
                 robot.extendy.setPower(-1);
-        }
+            }
 
         else {
             robot.extendy.setPower(0);
         }
 
-        if (gamepad2.b || gamepad1.right_bumper){
+        if (gamepad1.b){
             robot.closeTail();
         }
         else{

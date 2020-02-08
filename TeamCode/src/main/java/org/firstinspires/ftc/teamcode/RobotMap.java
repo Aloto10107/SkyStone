@@ -267,12 +267,12 @@ public class  RobotMap {
     }
 
     public synchronized void notPinch(){
-        leftclaw.setPosition(.5);
-        rightclaw.setPosition(0.12);
+        leftclaw.setPosition(.01);
+        rightclaw.setPosition(0.61);
     }
     public synchronized void pinch(){
-        leftclaw.setPosition(.01);
-        rightclaw.setPosition(.61);
+        leftclaw.setPosition(.5);
+        rightclaw.setPosition(.12);
     }
 
 

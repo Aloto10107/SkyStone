@@ -47,7 +47,7 @@ import org.firstinspires.ftc.teamcode.RobotMap;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="DoubleRedSkystone", group="Linear Opmode")
+@Autonomous(name="RedAuto", group="Linear Opmode")
 //@Disabled
 public class RedAuto extends LinearOpMode {
 
@@ -68,8 +68,8 @@ public class RedAuto extends LinearOpMode {
         robot.resetEncoders();
         robot.bigExtend(1, 1000);
         robot.notPinch();
-        robot.drive(0.5, 1000);
-        robot.gyroStrafe(-1, 0, 350);
+        robot.drive(0.5, 1250);
+        robot.gyroStrafe(-1, 0, 500);
         while (robot.hsv()[0] < 60) {
             robot.setMotor_br(.75 - (.015 * (robot.getHeading())));
             robot.setMotor_bl(-.75 + (.015 * (robot.getHeading())));
@@ -106,9 +106,29 @@ public class RedAuto extends LinearOpMode {
             robot.setMotor_fr(-1 - (.015 * (robot.getHeading())));
             robot.setMotor_fl(1 + (.015 * (robot.getHeading())));
         }
-        robot.gyroStrafe(1, 0, 1500);
+        robot.gyroStrafe(1, 0, 2250);
+        robot.skizzorLift(0.8, 500);
         robot.drive(0.5, 750);
-        robot.skizzorLift(-1, 500);
+        sleep(500);
+        robot.skizzorLift(-0.4, 500);
+        robot.notPinch();
+        robot.skizzorLift(0.8, 500);
+        robot.drive(0.5, -500);
+        sleep(500);
+        robot.gyroturn(180);
+        robot.drive(.5,-500);
+        robot.closeTail();
+        robot.rightArc(0.5, 1000);
+        robot.openTail();
+        robot.drive(.7,2000);
+        //son drop sonny sb mega chub its corona time
+        //nigil nyquil giga chad
+        //chen dog eater con coronavirus
+        //srisar vains, sweaty procrastinator
+        // big cliff, lil grant
+        //sir maximus III
+        //Logan the terrible logan the male?
 
+//bobs and vegana//
     }
 }
