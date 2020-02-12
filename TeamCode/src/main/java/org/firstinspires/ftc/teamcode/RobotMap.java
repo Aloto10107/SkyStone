@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import android.graphics.Color;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -10,11 +11,14 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.teamcode.VuforiaStuff;
 
 import static java.lang.Thread.sleep;
 
@@ -37,6 +41,7 @@ public class  RobotMap {
     public Servo righttail = null;
     public Servo arm = null;
     public Servo capLatch = null;
+    public CRServo tape = null;
     public DistanceSensor leftSensor;
     public DistanceSensor rightSensor;
     //public DistanceSensor smallEyes;
@@ -55,6 +60,12 @@ public class  RobotMap {
     //1120 counts per rotation
     double COUNTS_PER_INCH = 64.81;
     double SCALE_FACTOR = 255;
+
+    public VuforiaStuff vuforiaStuff;
+
+    private VuforiaLocalizer vuforia;
+    private static final String VUFORIA_KEY =
+            "AU0W0n3/////AAABmR8XzF3guUvdioVZmVSPQWgSHZEGEsa/li/PrDXTJOzpNa7++SSQmj96GVwRjrH8zk+oQ9P5Efp4sz80tiIS/rmHGtedHonNHn0He1tZoedzk5W24EiWOBo52Wr3tucP2cfP9zucxfOnKahG1cGKDhEV65GPv8YyxbVHYmqID0TEG3GooDJDUSdQqlDVLfVcf+EkFn1CHthzF3xMk7vMdttHHdXHSaYIWdTcx3ZM3HRNUkaBCkkXEKcnlS/SS5MQvlxTeeKVGjhKyWqOQG8JssMTrOrmXlmq5JJyziqjRE0LHvetRx2PpxEpEb2SnCk0UeSJV6U/IccfX/tGyZaTTJfm/XMddlMj9YJ1YpZLvPCk ";
 
 
     //HardwareMap hwMap =  null;
@@ -85,6 +96,7 @@ public class  RobotMap {
 
         righttail = ahwmap.get(Servo.class, "right_tail");
         arm = ahwmap.get(Servo.class, "arm");
+        tape = ahwmap.get(CRServo.class, "tape");
 
         skyStone = ahwmap.get(ColorSensor.class,"skystone");//this was Gran's fault, saved by Yung Nigil//
         distanceSensor = ahwmap.get(DistanceSensor.class,"skystone");
@@ -113,7 +125,16 @@ public class  RobotMap {
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 */
+        int cameraMonitorViewId = ahwmap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", ahwmap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+
+        parameters.vuforiaLicenseKey = VUFORIA_KEY;
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+
+        //  Instantiate the Vuforia engine
+        vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
     }
     public void resetEncoders(){

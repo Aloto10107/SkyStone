@@ -170,10 +170,19 @@ https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
 
         if (gamepad2.b || gamepad1.right_bumper){
             robot.closeTail();
+            robot.tape.setPower(-1);
         }
         else{
             robot.openTail();
-    }
+            robot.tape.setPower(0);
+
+        if (gamepad2.y){
+            robot.tape.setPower(1);
+        }
+        else {
+            robot.tape.setPower(0);
+        }
+        }
         telemetry.addData("skystone", robot.hsv()[0]);
         /*telemetry.addData("linered", robot.linered());
         telemetry.addData("lineblue", robot.lineblue());

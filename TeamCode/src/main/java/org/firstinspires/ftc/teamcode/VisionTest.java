@@ -22,8 +22,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
-
-
+import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.FRONT;
 
 
 /**
@@ -119,7 +118,7 @@ public class VisionTest extends LinearOpMode
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraDirection   = CAMERA_CHOICE;
+        parameters.cameraDirection   = FRONT;
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
@@ -242,28 +241,6 @@ public class VisionTest extends LinearOpMode
             telemetry.update();
 
         }
-
-
-
-
-/*        while((VuforiaTrackableDefaultListener)stoneTarget.getListener().equals()){
-
-
-            robot.setMotor_fr(.25);
-            robot.setMotor_fl(-.25);
-            robot.setMotor_br(-.25);
-            robot.setMotor_bl(.25);
-
-            telemetry.addData("target:",targetVisible);
-            telemetry.update();
-        }
-        robot.setMotor_fr(0);
-        robot.setMotor_fl(0);
-        robot.setMotor_br(0);
-        robot.setMotor_bl(0);*/
-
-
-        // Disable Tracking when we are done;
         targetsSkyStone.deactivate();
     }
 }
