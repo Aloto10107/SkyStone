@@ -29,7 +29,8 @@ public class  RobotMap {
     public DcMotor rightFront = null;
     public DcMotor leftBack = null;
     public DcMotor rightBack = null;
-    public DcMotor lift = null;
+    public DcMotor sonny1 = null;
+    public DcMotor sonny2 = null;
     public DcMotor extendy = null;
     public Servo leftclaw = null;
     public Servo rightclaw = null;
@@ -74,10 +75,12 @@ public class  RobotMap {
         rightFront = ahwmap.get(DcMotor.class, "right_front");
         leftBack = ahwmap.get(DcMotor.class, "left_back");
         rightBack = ahwmap.get(DcMotor.class, "right_back");
-        lift = ahwmap.get(DcMotor.class, "lift");
+        sonny1 = ahwmap.get(DcMotor.class, "lift");
         extendy = ahwmap.get(DcMotor.class, "extendy");
         imu = ahwmap.get(BNO055IMU.class, "imu");
         capLatch = ahwmap.get(Servo.class, "capLatch");
+        sonny2 = ahwmap.get(DcMotor.class, "Deltaakamentors");
+
 
         leftclaw = ahwmap.get(Servo.class, "left_claw");
         rightclaw = ahwmap.get(Servo.class, "right_claw");
@@ -246,17 +249,18 @@ public class  RobotMap {
         sleep(500);
     }
     public synchronized void skizzorLift(double power, long time) throws InterruptedException {
-        setLift(power);
+        setsonny1(power);
+        setsonny2(power);
         sleep(time);
-        setLift(0);
+        setsonny1(0);
+        setsonny2(0);
         sleep(500);
     }
 
 
 
-    public synchronized void setLift(double power){
-        lift.setPower(power);
-    }
+    public synchronized void setsonny1(double power){ sonny1.setPower(power);}
+    public synchronized void setsonny2(double power) {sonny2.setPower(power);}
     public synchronized void setExtendy(double power){
         extendy.setPower(power);
     }

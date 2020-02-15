@@ -108,10 +108,12 @@ public class TeleOP extends OpMode
 
         robot.mechanumDrive(forward,-gamepad1.right_stick_x, -gamepad1.left_stick_x);
         if (gamepad2.right_bumper){
-            robot.setLift(1);
+            robot.setsonny1(1);
+            robot.setsonny2(1);
         }
         else if(gamepad2.left_bumper){
-            robot.setLift(-1);
+            robot.setsonny1(-0.5);
+            robot.setsonny2(-0.5);
         }
 /*        else if(gamepad2.left_trigger>.8){
             robot.setLift(-.5);
@@ -120,7 +122,7 @@ public class TeleOP extends OpMode
             robot.setLift(.5);
         }*/
         else
-            robot.setLift(0);
+            robot.setsonny1(0);
 https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
 
         /*if (gamepad2.right_stick_button){
@@ -188,7 +190,6 @@ https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
         //telemetry.addData("smallEyes", robot.smallEyes.getDistance(DistanceUnit.MM));
         telemetry.update();
     }
-
     @Override
     public void stop() {
     }

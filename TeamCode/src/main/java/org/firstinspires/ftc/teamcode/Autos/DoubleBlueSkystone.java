@@ -69,12 +69,12 @@ public class DoubleBlueSkystone extends LinearOpMode {
         robot.bigExtend(1,1000);
         robot.notPinch();
         robot.drive(0.5,1250);
-        robot.gyroStrafe(1, 0, 350);
+        robot.gyroStrafe(-1, 0, 350);
         while (robot.hsv()[0] < 60) {
-            robot.setMotor_br(-1 + (0.03*(robot.getHeading())));
-            robot.setMotor_bl(1 - (0.03*(robot.getHeading())));
-            robot.setMotor_fr(-1 - (0.03*(robot.getHeading())));
-            robot.setMotor_fl(1 + (0.03*(robot.getHeading())));
+            robot.setMotor_br(-1 - (0.03*(robot.getHeading())));
+            robot.setMotor_bl(1 + (0.03*(robot.getHeading())));
+            robot.setMotor_fr(1 - (0.03*(robot.getHeading())));
+            robot.setMotor_fl(-1 + (0.03*(robot.getHeading())));
 
 
         }
@@ -88,10 +88,10 @@ public class DoubleBlueSkystone extends LinearOpMode {
         sleep(500);
         robot.skizzorLift(1,500);
 
-        robot.gyroDrive(-1,0,500);
+        robot.gyroDrive(-1,0,350);
         while (robot.linered() < 100) {
-            robot.setMotor_br(1 + (0.03*(robot.getHeading())));
-            robot.setMotor_bl(-1 - (0.03*(robot.getHeading())));
+            robot.setMotor_br(-1 - (0.03*(robot.getHeading())));
+            robot.setMotor_bl(1 + (0.03*(robot.getHeading())));
             robot.setMotor_fr(1 - (0.03*(robot.getHeading())));
             robot.setMotor_fl(-1 + (0.03*(robot.getHeading())));
         }
@@ -103,11 +103,12 @@ public class DoubleBlueSkystone extends LinearOpMode {
 
         //second stone
         robot.gyroStrafe(1,0,4000);
+        robot.gyroDrive(1,0,500);
         while (robot.hsv()[0] < 60) {
-            robot.setMotor_br(1 - (.03*(robot.getHeading())));
-            robot.setMotor_bl(-1 + (.03*(robot.getHeading())));
-            robot.setMotor_fr(1 + (.03*(robot.getHeading())));
-            robot.setMotor_fl(-1 - (.03*(robot.getHeading())));
+            robot.setMotor_br(-1 - (.03*(robot.getHeading())));
+            robot.setMotor_bl(1 + (.03*(robot.getHeading())));
+            robot.setMotor_fr(1 - (.03*(robot.getHeading())));
+            robot.setMotor_fl(-1 + (.03*(robot.getHeading())));
 
 
         }
@@ -119,13 +120,14 @@ public class DoubleBlueSkystone extends LinearOpMode {
         robot.pinch();
         sleep(500);
         robot.skizzorLift(1,500);
-        robot.drive(-0.5, 800);
+        robot.drive(-0.5, 600);
         robot.gyroturn(90);
+        sleep(500);
         while (robot.linered() < 100) {
-            robot.setMotor_br(1 + (0.03*(robot.getHeading()))-90);
-            robot.setMotor_bl(-1 - (0.03*(robot.getHeading()))-90);
-            robot.setMotor_fr(1 - (0.03*(robot.getHeading()))-90);
-            robot.setMotor_fl(-1 + (0.03*(robot.getHeading()))-90);
+            robot.setMotor_br(1 - (0.03*(robot.getHeading()))+90);
+            robot.setMotor_bl(1 + (0.03*(robot.getHeading()))+90);
+            robot.setMotor_fr(1 - (0.03*(robot.getHeading()))+90);
+            robot.setMotor_fl(1 + (0.03*(robot.getHeading()))+90);
         }
         robot.setMotor_fr(0);
         robot.setMotor_br(0);
