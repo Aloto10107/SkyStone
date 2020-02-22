@@ -33,7 +33,7 @@ public class  RobotMap {
     public DcMotor rightFront = null;
     public DcMotor leftBack = null;
     public DcMotor rightBack = null;
-    public DcMotor sonny1 = null;
+    public DcMotor lift = null;
     public DcMotor sonny2 = null;
     public DcMotor extendy = null;
     public Servo leftclaw = null;
@@ -41,6 +41,7 @@ public class  RobotMap {
     public Servo lefttail = null;
     public Servo righttail = null;
     public Servo arm = null;
+    //public Servo tape = null;
     public Servo capLatch = null;
     public CRServo tape = null;
     public DistanceSensor leftSensor;
@@ -86,7 +87,7 @@ public class  RobotMap {
         rightFront = ahwmap.get(DcMotor.class, "right_front");
         leftBack = ahwmap.get(DcMotor.class, "left_back");
         rightBack = ahwmap.get(DcMotor.class, "right_back");
-        sonny1 = ahwmap.get(DcMotor.class, "lift");
+        lift = ahwmap.get(DcMotor.class, "lift");
         extendy = ahwmap.get(DcMotor.class, "extendy");
         imu = ahwmap.get(BNO055IMU.class, "imu");
         capLatch = ahwmap.get(Servo.class, "capLatch");
@@ -96,6 +97,7 @@ public class  RobotMap {
         leftclaw = ahwmap.get(Servo.class, "left_claw");
         rightclaw = ahwmap.get(Servo.class, "right_claw");
         lefttail = ahwmap.get(Servo.class, "left_tail");
+        //tape = ahwmap.get(Servo.class, "tape");
 
         righttail = ahwmap.get(Servo.class, "right_tail");
         arm = ahwmap.get(Servo.class, "arm");
@@ -270,21 +272,22 @@ public class  RobotMap {
         sleep(500);
     }
     public synchronized void skizzorLift(double power, long time) throws InterruptedException {
-        setsonny1(power);
+        setLift(power);
         setsonny2(power);
         sleep(time);
-        setsonny1(0);
+        setLift(0);
         setsonny2(0);
         sleep(500);
     }
 
 
 
-    public synchronized void setsonny1(double power){ sonny1.setPower(power);}
+    public synchronized void setLift(double power){ lift.setPower(power);}
     public synchronized void setsonny2(double power) {sonny2.setPower(power);}
     public synchronized void setExtendy(double power){
         extendy.setPower(power);
     }
+
 
     public synchronized int getPos(){
         return rightFront.getCurrentPosition();

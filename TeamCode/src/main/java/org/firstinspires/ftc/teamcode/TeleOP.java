@@ -108,21 +108,27 @@ public class TeleOP extends OpMode
 
         robot.mechanumDrive(forward,-gamepad1.right_stick_x, -gamepad1.left_stick_x);
         if (gamepad2.right_bumper){
-            robot.setsonny1(1);
+            robot.setLift(1);
             robot.setsonny2(1);
         }
-        else if(gamepad2.left_bumper){
-            robot.setsonny1(-0.5);
-            robot.setsonny2(-0.5);
+        else if (!gamepad2.left_bumper)
+            robot.setLift(0);
+            robot.setsonny2(0);
+
+        if(gamepad2.left_bumper){
+            robot.setLift(-1);
+            robot.setsonny2(-1);
         }
+        else if (!gamepad2.right_bumper)
+            robot.setLift(0);
+            robot.setsonny2(0);
 /*        else if(gamepad2.left_trigger>.8){
             robot.setLift(-.5);
         }
         else if(gamepad2.right_trigger>.8){
             robot.setLift(.5);
         }*/
-        else
-            robot.setsonny1(0);
+
 https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
 
         /*if (gamepad2.right_stick_button){
@@ -175,8 +181,16 @@ https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
         }
         else{
             robot.openTail();
+
+       /* if(gamepad2.b){
+            robot.tape.setPosition(1);
+
+        }else if (gamepad2.y && !gamepad2.b){
+            robot.tape.setPosition(0);
+        }*/
     }
         telemetry.addData("skystone", robot.hsv()[0]);
+        telemetry.addData("Line", robot.linered());
         /*telemetry.addData("linered", robot.linered());
         telemetry.addData("lineblue", robot.lineblue());
         telemetry.addData("distance", robot.distanceSensor.getDistance(DistanceUnit.CM));
@@ -189,6 +203,7 @@ https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
         telemetry.addData("leftclaw",robot.leftclaw.getPosition());*/
         //telemetry.addData("smallEyes", robot.smallEyes.getDistance(DistanceUnit.MM));
         telemetry.update();
+
     }
     @Override
     public void stop() {

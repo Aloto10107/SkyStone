@@ -69,13 +69,13 @@ public class DoubleBlueSkystone extends LinearOpMode {
         robot.bigExtend(1,1000);
         robot.notPinch();
         robot.drive(0.5,1250);
-        robot.gyroStrafe(-1, 0, 350);
-        while (robot.hsv()[0] < 60) {
+        robot.gyroStrafe(0.5, 0, 500);
+
+        while (robot.hsv()[0] < 120) {
             robot.setMotor_br(-1 - (0.03*(robot.getHeading())));
             robot.setMotor_bl(1 + (0.03*(robot.getHeading())));
             robot.setMotor_fr(1 - (0.03*(robot.getHeading())));
             robot.setMotor_fl(-1 + (0.03*(robot.getHeading())));
-
 
         }
         robot.setMotor_fr(0);
@@ -88,23 +88,25 @@ public class DoubleBlueSkystone extends LinearOpMode {
         sleep(500);
         robot.skizzorLift(1,500);
 
-        robot.gyroDrive(-1,0,350);
+        robot.gyroDrive(-1,0,500);
         while (robot.linered() < 100) {
             robot.setMotor_br(-1 - (0.03*(robot.getHeading())));
             robot.setMotor_bl(1 + (0.03*(robot.getHeading())));
             robot.setMotor_fr(1 - (0.03*(robot.getHeading())));
             robot.setMotor_fl(-1 + (0.03*(robot.getHeading())));
         }
-        robot.gyroStrafe(-1,0,1000);
+        robot.gyroStrafe(-1,0,500);
         robot.notPinch();
         robot.skizzorLift(-1,500);
-        robot.drive(.5,100);
-        robot.drive(-.5,100);
+       /* robot.drive(.5,100);
+        robot.drive(-.5,100);*/
 
         //second stone
-        robot.gyroStrafe(1,0,4000);
-        robot.gyroDrive(1,0,500);
-        while (robot.hsv()[0] < 60) {
+        robot.gyroStrafe(1,0,4500);
+//        robot.gyroturn(90);
+//        robot.gyroDrive(-0.5,-90,4500 );
+        robot.gyroDrive(1,0,400);
+        while (robot.hsv()[0] < 120) {
             robot.setMotor_br(-1 - (.03*(robot.getHeading())));
             robot.setMotor_bl(1 + (.03*(robot.getHeading())));
             robot.setMotor_fr(1 - (.03*(robot.getHeading())));
@@ -116,11 +118,10 @@ public class DoubleBlueSkystone extends LinearOpMode {
         robot.setMotor_br(0);
         robot.setMotor_fl(0);
         robot.setMotor_bl(0);
-        robot.gyroDrive(.5,0,500);
         robot.pinch();
         sleep(500);
         robot.skizzorLift(1,500);
-        robot.drive(-0.5, 600);
+        robot.drive(-0.5, 1000);
         robot.gyroturn(90);
         sleep(500);
         while (robot.linered() < 100) {

@@ -68,9 +68,9 @@ public class DoubleRedSkystone extends LinearOpMode {
         robot.resetEncoders();
         robot.bigExtend(1,1000);
         robot.notPinch();
-        robot.drive(0.5,1250);
-        robot.gyroStrafe(-1, 0, 350);
-        while (robot.hsv()[0] < 60) {
+        robot.drive(0.5,1100);
+        robot.gyroStrafe(-1, 0, 750);
+        while (robot.hsv()[0] < 120) {
             robot.setMotor_br(1 - (0.03*(robot.getHeading())));
             robot.setMotor_bl(-1 + (0.03*(robot.getHeading())));
             robot.setMotor_fr(-1 - (0.03*(robot.getHeading())));
@@ -95,6 +95,11 @@ public class DoubleRedSkystone extends LinearOpMode {
             robot.setMotor_fr(-1 - (0.03*(robot.getHeading())));
             robot.setMotor_fl(1 + (0.03*(robot.getHeading())));
         }
+        robot.setMotor_fr(0);
+        robot.setMotor_br(0);
+        robot.setMotor_fl(0);
+        robot.setMotor_bl(0);
+        sleep(500);
         robot.gyroStrafe(1,0,1000);
         robot.notPinch();
         robot.skizzorLift(-1,500);
@@ -103,7 +108,7 @@ public class DoubleRedSkystone extends LinearOpMode {
 
         //second stone
         robot.gyroStrafe(-1,0,4000);
-        while (robot.hsv()[0] < 60) {
+        while (robot.hsv()[0] < 120) {
             robot.setMotor_br(1 - (.03*(robot.getHeading())));
             robot.setMotor_bl(-1 + (.03*(robot.getHeading())));
             robot.setMotor_fr(-1 - (.03*(robot.getHeading())));
@@ -121,17 +126,18 @@ public class DoubleRedSkystone extends LinearOpMode {
         robot.skizzorLift(1,500);
         robot.drive(-0.5, 800);
         robot.gyroturn(-90);
+        robot.encoderGyroDrive(1, -90,40);
         while (robot.linered() < 100) {
-            robot.setMotor_br(-1 - (0.03*(robot.getHeading()))+90);
-            robot.setMotor_bl(-1 + (0.03*(robot.getHeading()))+90);
-            robot.setMotor_fr(-1 - (0.03*(robot.getHeading()))+90);
-            robot.setMotor_fl(-1 + (0.03*(robot.getHeading()))+90);
+            robot.setMotor_br(-1 - (0.03*(robot.getHeading())));
+            robot.setMotor_bl(-1 + (0.03*(robot.getHeading())));
+            robot.setMotor_fr(-1 - (0.03*(robot.getHeading())));
+            robot.setMotor_fl(-1 + (0.03*(robot.getHeading())));
         }
         robot.setMotor_fr(0);
         robot.setMotor_br(0);
         robot.setMotor_fl(0);
         robot.setMotor_bl(0);
-        robot.gyroDrive(1,-90,250);
+        robot.gyroDrive(1,-90,750);
         robot.notPinch();
         robot.drive(.5,100);
         robot.gyroDrive(-1,-90,450);
