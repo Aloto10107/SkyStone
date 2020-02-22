@@ -49,8 +49,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name="TeleOp", group="Iterative Opmode")
 //@Disabled
-public class TeleOP extends OpMode
-{
+public class TeleOP extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFront = null;
@@ -72,7 +71,6 @@ public class TeleOP extends OpMode
         robot.init(hardwareMap);
 
         robot.imuINIT();
-
 
 
     }
@@ -102,15 +100,14 @@ public class TeleOP extends OpMode
 
         // Setup a variable for each drive wheel to save power level for telemetry
 
-        forward = (gamepad1.right_trigger-gamepad1.left_trigger);
+        forward = (gamepad1.right_trigger - gamepad1.left_trigger);
 
         //robot.mechanumDrive((float) Math.pow(forward,3),-(float)Math.pow(gamepad1.right_stick_x,3), -(float)Math.pow(gamepad1.left_stick_x,3));
 
-        robot.mechanumDrive(forward,-gamepad1.right_stick_x, -gamepad1.left_stick_x);
-        if (gamepad2.right_bumper){
+        robot.mechanumDrive(forward, -gamepad1.right_stick_x, -gamepad1.left_stick_x);
+        if (gamepad2.right_bumper) {
             robot.setLift(1);
-        }
-        else if(gamepad2.left_bumper){
+        } else if (gamepad2.left_bumper) {
             robot.setLift(-1);
         }
 /*        else if(gamepad2.left_trigger>.8){
@@ -121,7 +118,8 @@ public class TeleOP extends OpMode
         }*/
         else
             robot.setLift(0);
-https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
+        https:
+//www.gobilda.com/2000-series-dual-mode-servo-25-2/
 
         /*if (gamepad2.right_stick_button){
             robot.arm.setPosition(0.5);
@@ -134,15 +132,13 @@ https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
             robot.leftclaw.setPosition(0.61);
             robot.rightclaw.setPosition(0.1);
 
-        }
-        else{
+        } else {
             robot.leftclaw.setPosition(0.1);
             robot.rightclaw.setPosition(0.61);
         }
         if (!gamepad2.x) {
             robot.capLatch.setPosition(0.9);
-        }
-        else{
+        } else {
             robot.capLatch.setPosition(0);
 
         }
@@ -157,33 +153,28 @@ https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
         }*/
 
 
-        if(gamepad2.right_trigger > 0.8 && gamepad2.left_trigger < 0.8) {
+        if (gamepad2.right_trigger > 0.8 && gamepad2.left_trigger < 0.8) {
             robot.extendy.setPower(1);
-        }
-        else if(gamepad2.left_trigger > 0.8 && gamepad2.right_trigger < 0.8){
-                robot.extendy.setPower(-1);
-        }
-
-        else {
+        } else if (gamepad2.left_trigger > 0.8 && gamepad2.right_trigger < 0.8) {
+            robot.extendy.setPower(-1);
+        } else {
             robot.extendy.setPower(0);
         }
 
-        if (gamepad2.b || gamepad1.right_bumper){
-            robot.closeTail();
-            robot.tape.setPower(-1);
-        }
-        else{
-            robot.openTail();
-            robot.tape.setPower(0);
+//        if (gamepad2.b || gamepad1.right_bumper){
+//            robot.closeTail();
+//            robot.tape.setPower(-1); }
+//        else{
+//            robot.openTail();
+//            robot.tape.setPower(0);+
 
-        if (gamepad2.y){
+        if (gamepad2.y) {
             robot.tape.setPower(1);
-        }
-        else {
+        } else {
             robot.tape.setPower(0);
         }
-        }
-        telemetry.addData("skystone", robot.hsv()[0]);
+
+    telemetry.addData("skystone", robot.hsv()[0]);
         /*telemetry.addData("linered", robot.linered());
         telemetry.addData("lineblue", robot.lineblue());
         telemetry.addData("distance", robot.distanceSensor.getDistance(DistanceUnit.CM));
@@ -194,9 +185,10 @@ https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
         telemetry.addData("heading",robot.getHeading());
         telemetry.addData("leftRight",robot.getPos());
         telemetry.addData("leftclaw",robot.leftclaw.getPosition());*/
-        //telemetry.addData("smallEyes", robot.smallEyes.getDistance(DistanceUnit.MM));
-        telemetry.update();
-    }
+    //telemetry.addData("smallEyes", robot.smallEyes.getDistance(DistanceUnit.MM));
+    telemetry.update();
+}
+
 
     @Override
     public void stop() {
