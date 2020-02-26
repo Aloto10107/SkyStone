@@ -4,6 +4,8 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.control.PIDCoefficients;
 import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
 import com.qualcomm.hardware.motors.NeveRest20Gearmotor;
+import com.qualcomm.hardware.motors.NeveRest40Gearmotor;
+import com.qualcomm.hardware.motors.RevRobotics40HdHexMotor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
 /*
@@ -27,7 +29,7 @@ public class DriveConstants {
      * @DeviceProperties and @MotorType annotations.
      */
     private static final MotorConfigurationType MOTOR_CONFIG =
-            MotorConfigurationType.getMotorType(NeveRest20Gearmotor.class);
+            MotorConfigurationType.getMotorType(RevRobotics40HdHexMotor.class);
 
     /*
      * Set the first flag appropriately. If using the built-in motor velocity PID, update
@@ -44,9 +46,9 @@ public class DriveConstants {
      * angular distances although most angular parameters are wrapped in Math.toRadians() for
      * convenience. Make sure to exclude any gear ratio included in MOTOR_CONFIG from GEAR_RATIO.
      */
-    public static double WHEEL_RADIUS = 2;
+    public static double WHEEL_RADIUS = 4;
     public static double GEAR_RATIO = 22/16; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 1;
+    public static double TRACK_WIDTH = 11.66;
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -67,7 +69,7 @@ public class DriveConstants {
      * forces acceleration-limited profiling).
      */
     public static DriveConstraints BASE_CONSTRAINTS = new DriveConstraints(
-            30.0, 30.0, 0.0,
+            30.0, 15.0, 0.0,
             Math.toRadians(180.0), Math.toRadians(180.0), 0.0
     );
 

@@ -29,6 +29,13 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.path.Path;
+import com.acmerobotics.roadrunner.path.heading.ConstantInterpolator;
+import com.acmerobotics.roadrunner.path.heading.TangentInterpolator;
+import com.acmerobotics.roadrunner.path.heading.WiggleInterpolator;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -39,6 +46,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.RobotMap;
+import org.firstinspires.ftc.teamcode.drive.mecanum.SampleMecanumDriveBase;
+import org.firstinspires.ftc.teamcode.drive.mecanum.SampleMecanumDriveREVOptimized;
 
 /**
  * This file illustrates the concept of driving a path based on Gyro heading and encoder counts.
@@ -103,12 +112,19 @@ public class EncoderTest extends LinearOpMode {
 
 
         robot.init(hardwareMap);
+        SampleMecanumDriveBase drive = new SampleMecanumDriveREVOptimized(hardwareMap);
+
 
         telemetry.addLine("ready speatly");
         telemetry.update();
 
         waitForStart();
         //robot.encoderDriveStraight(1, 24);
+        drive.followTrajectorySync(
+                drive.trajectoryBuilder()
+                        .lineTo(new Vector2d(15,15), new ConstantInterpolator(0))
+                        .build()
+        );
 
 
 

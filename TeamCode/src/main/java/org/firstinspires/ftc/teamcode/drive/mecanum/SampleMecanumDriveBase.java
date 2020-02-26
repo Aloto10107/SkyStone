@@ -15,6 +15,8 @@ import com.acmerobotics.roadrunner.control.PIDFController;
 import com.acmerobotics.roadrunner.drive.DriveSignal;
 import com.acmerobotics.roadrunner.drive.MecanumDrive;
 import com.acmerobotics.roadrunner.followers.HolonomicPIDVAFollower;
+import com.acmerobotics.roadrunner.followers.RamseteFollower;
+import com.acmerobotics.roadrunner.followers.TankPIDVAFollower;
 import com.acmerobotics.roadrunner.followers.TrajectoryFollower;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.profile.MotionProfile;
@@ -37,8 +39,8 @@ import java.util.List;
  */
 @Config
 public abstract class SampleMecanumDriveBase extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(2, 0, .01);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(.9, 0, .015);
 
 
     public enum Mode {
@@ -58,9 +60,11 @@ public abstract class SampleMecanumDriveBase extends MecanumDrive {
 
     private DriveConstraints constraints;
     private TrajectoryFollower follower;
+    private TrajectoryFollower followerLinear;
 
     private List<Double> lastWheelPositions;
     private double lastTimestamp;
+
 
     public SampleMecanumDriveBase() {
         super(kV, kA, kStatic, TRACK_WIDTH);
@@ -77,6 +81,9 @@ public abstract class SampleMecanumDriveBase extends MecanumDrive {
 
         constraints = new MecanumConstraints(BASE_CONSTRAINTS, TRACK_WIDTH);
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID);
+        followerLinear = new TankPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, new Pose2d(0.5, 0.5, Math.toRadians(3.0)),
+                1.0);
+
     }
 
     public TrajectoryBuilder trajectoryBuilder() {
