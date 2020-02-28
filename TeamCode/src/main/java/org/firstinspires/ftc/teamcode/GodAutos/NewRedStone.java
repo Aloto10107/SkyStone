@@ -63,6 +63,7 @@ public class NewRedStone extends LinearOpMode {
     private OpenCvInternalCamera phoneCam;
     private SkystoneDetector detector = new SkystoneDetector();
     private String position;
+    public  float skystonepos = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -72,7 +73,7 @@ public class NewRedStone extends LinearOpMode {
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.FRONT, cameraMonitorViewId);
         phoneCam.openCameraDevice();
         phoneCam.setPipeline(detector);
-        phoneCam.startStreaming(320, 240, OpenCvCameraRotation. SIDEWAYS_LEFT);
+        phoneCam.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_LEFT);
 
         robot.init(hardwareMap);
         SampleMecanumDriveBase drive = new SampleMecanumDriveREVOptimized(hardwareMap);
@@ -90,48 +91,78 @@ public class NewRedStone extends LinearOpMode {
 
         position = detector.position;
 
-        robot.gyroStrafe(-1,0,500);
+        robot.gyroStrafe(-1, 0, 500);
         robot.gyroturn(90);
 
 
-        if (position == "RIGHT"){
-            robot.gyroDrive(.5,90,950);
+        if (position == "RIGHT") {
+            robot.gyroDrive(.5, 90, 950);
             robot.notPinch();
-            robot.gyroStrafe(.75,90,600);
-        }
-        else if (position == "CENTER"){
-            robot.gyroDrive(.5,90,950);
+            robot.gyroStrafe(.75, 90, 400);
+            skystonepos = 1;
+        } else if (position == "CENTER") {
+            robot.gyroDrive(.5, 90, 950);
             robot.notPinch();
-            robot.gyroStrafe(-.75,90,400);
-        }
-        else if (position == "LEFT"){
-            robot.gyroDrive(.5,90,950);
+            robot.gyroStrafe(-.75, 90, 600);
+            skystonepos = 2;
+        } else if (position == "LEFT") {
+            robot.gyroDrive(.5, 90, 980);
             robot.notPinch();
-            robot.gyroStrafe(-.75,90,1000);
+            robot.gyroStrafe(-.75, 90, 1000);
+            skystonepos = 0;
         }
-        robot.gyroDrive(0.5,90,500);
-        robot.bigExtend(0.5,1300);
+        robot.gyroDrive(1, 90, 200);
+        robot.bigExtend(1, 800);
         robot.pinch();
         sleep(500);
-        robot.skizzorLift(0.5,800);
-        robot.gyroDrive(-.5,90,500);
+        robot.skizzorLift(1, 300);
+        robot.gyroDrive(-1, 90, 400);
         robot.gyroturn(0);
-        while (robot.linered() < 100) {
-            robot.setMotor_br(1 - (0.03*(robot.getHeading())));
-            robot.setMotor_bl(1 + (0.03*(robot.getHeading())));
-            robot.setMotor_fr(1 - (0.03*(robot.getHeading())));
-            robot.setMotor_fl(1 + (0.03*(robot.getHeading())));
+        robot.gyroDrive(1, 0, 700);
+        while (robot.linered() < 80) {
+            telemetry.addData("color",robot.linered());
+            telemetry.update();
+            robot.setMotor_br(0.5 - (0.03 * (robot.getHeading())));
+            robot.setMotor_bl(0.5 + (0.03 * (robot.getHeading())));
+            robot.setMotor_fr(0.5 - (0.03 * (robot.getHeading())));
+            robot.setMotor_fl(0.5 + (0.03 * (robot.getHeading())));
         }
         robot.setMotor_fr(0);
         robot.setMotor_br(0);
         robot.setMotor_fl(0);
         robot.setMotor_bl(0);
-        robot.gyroDrive(0.7,0,600);
+        robot.gyroDrive(1, 0, 350);
+        sleep(500);
         robot.notPinch();
+        robot.gyroturn(180);
+        robot.encoderGyroDrive(1,180,50);
+        if (skystonepos == 1 ) {
+            robot.gyroDrive(.75, 180, 500);
+            robot.notPinch();
+            robot.gyroStrafe(.75, 180, 2000);
+            robot.gyroDrive(1,180,400);
+            robot.skizzorLift(-1,150);
+        } else if (skystonepos == 2) {
+            robot.gyroDrive(1, 180, 750);
+            robot.notPinch();
+            robot.gyroStrafe(.75, 180, 2000);
+            robot.gyroDrive(1,180,400);
+            robot.skizzorLift(-1,150);
+        } else if (skystonepos == 0) {
+            robot.gyroDrive(.5, 180, 950);
+            robot.notPinch();
+            robot.gyroStrafe(.75, 180, 2000);
+            robot.gyroDrive(0.7, 180, 400);
+            robot.skizzorLift(-1,150);
 
-
-
-
+        }
+        robot.pinch();
+        /*robot.skizzorLift(1,200);
+        robot.gyroDrive(-1,90,500);
+        robot.gyroturn(0);
+        robot.gyroDrive(1,0,1700);
+        robot.notPinch();
+        robot.gyroDrive(1,90,300);*/
 
     }
 

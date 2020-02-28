@@ -411,7 +411,7 @@ public class  RobotMap {
         rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
-        float Kp = (float) 0.03;
+        float Kp = (float) 0.04;
         float Kd = (float) 0.0001;
 
         while (true) {
