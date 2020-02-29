@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.GodAutos;
+package org.firstinspires.ftc.teamcode.Autos;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -55,8 +55,8 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 
 
 
-@Autonomous(name="REDSTONE", group="LinearOpMode")
-public class NewRedStone extends LinearOpMode {
+@Autonomous(name="NewBlueStone", group="LinearOpMode")
+public class NewBlueSkystone extends LinearOpMode {
     RobotMap robot = new RobotMap();
 
 
@@ -98,17 +98,17 @@ public class NewRedStone extends LinearOpMode {
 
 
         if (position == "RIGHT") {
-            robot.gyroDrive(.5, 90, 980);
+            robot.gyroDrive(.5, 90, 880);
             robot.notPinch();
             robot.gyroStrafe(.75, 90, 400);
             skystonepos = 1;
         } else if (position == "CENTER") {
-            robot.gyroDrive(.5, 90, 950);
+            robot.gyroDrive(.5, 90, 880);
             robot.notPinch();
             //robot.gyroStrafe(-.75, 90, 600);//
             skystonepos = 2;
         } else if (position == "LEFT") {
-            robot.gyroDrive(.5, 90, 950);
+            robot.gyroDrive(.5, 90, 820);
             robot.notPinch();
             robot.gyroStrafe(-.75, 90, 1000);
             skystonepos = 0;
@@ -118,8 +118,8 @@ public class NewRedStone extends LinearOpMode {
         sleep(500);
         robot.skizzorLift(1, 300);
         robot.gyroDrive(-1, 90, 170);
-        robot.gyroturn(0);
-        robot.gyroDrive(1, 0, 700);
+        robot.gyroturn(180);
+        robot.encoderDrive(1, 25);
         while (robot.linered() < 80) {
             telemetry.addData("color",robot.linered());
             telemetry.update();
@@ -135,8 +135,8 @@ public class NewRedStone extends LinearOpMode {
         robot.gyroDrive(1, 0, 200);
         sleep(500);
         robot.notPinch();
-        robot.gyroturn(-180);
-       robot.gyroDrive(1, -180, 2000);
+        robot.gyroturn(0);
+        robot.gyroDrive(1, -180, 2000);
        /* if (skystonepos == 1 ) {
             robot.encoderDrive(.75, 5);
             robot.notPinch();
@@ -155,7 +155,7 @@ public class NewRedStone extends LinearOpMode {
             robot.gyroStrafe(.75, -180, 2000);
             robot.gyroDrive(0.7, -
                      180, 400);
-            robot.skizzorLift(-1,150);*/
+            robot.skizzorLift(-1,150);
 
 
         robot.pinch();
@@ -164,7 +164,7 @@ public class NewRedStone extends LinearOpMode {
         robot.gyroturn(0);
         robot.gyroDrive(1,0,1700);
         robot.notPinch();
-        robot.gyroDrive(-1,90,300);
+        robot.gyroDrive(-1,90,300);*/
 
     }
 
