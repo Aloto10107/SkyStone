@@ -119,7 +119,7 @@ public class NewBlueSkystone extends LinearOpMode {
         robot.skizzorLift(1, 300);
         robot.gyroDrive(-1, 90, 170);
         robot.gyroturn(180);
-        robot.encoderDrive(1, 25);
+        robot.drive(0.5, 1000);
         while (robot.linered() < 80) {
             telemetry.addData("color",robot.linered());
             telemetry.update();
@@ -132,11 +132,10 @@ public class NewBlueSkystone extends LinearOpMode {
         robot.setMotor_br(0);
         robot.setMotor_fl(0);
         robot.setMotor_bl(0);
-        robot.gyroDrive(1, 0, 200);
+        robot.drive(0.7, 1000);
         sleep(500);
         robot.notPinch();
-        robot.gyroturn(0);
-        robot.gyroDrive(1, -180, 2000);
+        robot.drive(-0.7, 600);
        /* if (skystonepos == 1 ) {
             robot.encoderDrive(.75, 5);
             robot.notPinch();

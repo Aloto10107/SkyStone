@@ -132,11 +132,13 @@ public class NewRedStone extends LinearOpMode {
         robot.setMotor_br(0);
         robot.setMotor_fl(0);
         robot.setMotor_bl(0);
-        robot.gyroDrive(1, 0, 200);
+        robot.gyroDrive(1, 0, 300);
         sleep(500);
         robot.notPinch();
-        robot.gyroturn(-180);
-       robot.gyroDrive(1, -180, 2000);
+        sleep(500);
+        robot.drive(-1,300);
+        /*robot.gyroturn(-180);
+       robot.gyroDrive(1, -180, 2000);*/
        /* if (skystonepos == 1 ) {
             robot.encoderDrive(.75, 5);
             robot.notPinch();
@@ -158,13 +160,15 @@ public class NewRedStone extends LinearOpMode {
             robot.skizzorLift(-1,150);*/
 
 
-        robot.pinch();
+       /* robot.pinch();
         robot.skizzorLift(1,200);
         robot.gyroStrafe(-0.7,180,500);
         robot.gyroturn(0);
         robot.gyroDrive(1,0,1700);
-        robot.notPinch();
+        robot.notPinch();*/
+/*
         robot.gyroDrive(-1,90,300);
+*/
 
     }
 

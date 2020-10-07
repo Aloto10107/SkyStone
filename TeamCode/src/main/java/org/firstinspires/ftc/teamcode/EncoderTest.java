@@ -119,12 +119,8 @@ public class EncoderTest extends LinearOpMode {
         telemetry.update();
 
         waitForStart();
-        //robot.encoderDriveStraight(1, 24);
-        drive.followTrajectorySync(
-                drive.trajectoryBuilder()
-                        .lineTo(new Vector2d(15,15), new ConstantInterpolator(0))
-                        .build()
-        );
+        robot.bigExtend(1,3000);
+        
 
 
 

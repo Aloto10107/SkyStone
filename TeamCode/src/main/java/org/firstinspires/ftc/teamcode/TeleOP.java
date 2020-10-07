@@ -128,8 +128,23 @@ public class TeleOP extends OpMode
         else if(gamepad2.right_trigger>.8){
             robot.setLift(.5);
         }*/
+    if(gamepad2.right_stick_button) {
+        robot.setCapLatch(1);
+    }
+    else if(!gamepad2.right_stick_button) {
+        robot.setCapLatch(0);
 
-https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
+    }
+    if (gamepad2.left_stick_button){
+        robot.setCapLatch(-1);
+    } else if (!gamepad2.left_stick_button) {
+        robot.setCapLatch(0);
+    }
+
+
+
+
+        https://www.gobilda.com/2000-series-dual-mode-servo-25-2/
 
         /*if (gamepad2.right_stick_button){
             robot.arm.setPosition(0.5);

@@ -36,6 +36,7 @@ public class  RobotMap {
     public DcMotor lift = null;
     public DcMotor sonny2 = null;
     public DcMotor extendy = null;
+    public DcMotor capLift = null;
     public Servo leftclaw = null;
     public Servo rightclaw = null;
     public Servo lefttail = null;
@@ -92,6 +93,7 @@ public class  RobotMap {
         imu = ahwmap.get(BNO055IMU.class, "imu");
         capLatch = ahwmap.get(Servo.class, "capLatch");
         sonny2 = ahwmap.get(DcMotor.class, "Deltaakamentors");
+        capLift = ahwmap.get(DcMotor.class, "capLift");
 
 
         leftclaw = ahwmap.get(Servo.class, "left_claw");
@@ -326,6 +328,11 @@ public class  RobotMap {
         double convertedPower = (power);
 
         rightBack.setPower(convertedPower);
+    }
+    public synchronized void setCapLatch(double power) {
+        double convertedPower = (power);
+
+        capLift.setPower(convertedPower);
     }
     public synchronized void closeTail() {
        lefttail.setPosition(1);
