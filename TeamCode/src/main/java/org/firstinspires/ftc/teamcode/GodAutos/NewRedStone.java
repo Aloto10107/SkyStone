@@ -144,11 +144,10 @@ public class NewRedStone extends LinearOpMode {
             robot.notPinch();
             robot.strafeRightTime(.75, 1500);
             robot.encoderDrive(.75, 1);
-            robot.skizzorLift(-1,150);
-        } else if (skystonepos == 2) {
-            robot.encoderDrive(.75, 15);
-            robot.notPinch();
-            robot.strafeRightTime(.75, 1500);
+           robot.skizzorLift(-1,150);
+       } else if (skystonepos == 2) {
+           robot.encoderDrive(.75, 15);            robot.notPinch();
+           robot.strafeRightTime(.75, 100);
             robot.encoderDrive(.75, 1);
             robot.skizzorLift(-1,150);
         } else if (skystonepos == 0) {
